@@ -5,29 +5,55 @@ O sistema será simples, funcional e atenderá a todos os requisitos do trabalho
 
 
 animalHealthCenter/
+
 ├─ README.md
+
 ├─ composer.json
+
 ├─ .env.example
+
 ├─ Dockerfile
+
 ├─ docker-compose.yml
+
 ├─ public/
+
 │ └─ index.php
+
 ├─ app/
+
 │ ├─ Models/
+
 │ ├─ Http/Controllers/
+
 │ ├─ Http/Middleware/
+
 │ └─ Providers/
+
 ├─ resources/
+
 │ ├─ views/ # HTML + Blade templates
+
 │ ├─ css/
+
 │ └─ js/
+
 ├─ routes/
+
 │ └─ web.php
+
 ├─ tests/
+
 │ ├─ Unit/
+
 │ └─ Feature/ # testes de interface e comportamento
+
 └─ docs/
+
 ├─ requisitos.docx (ou .md)
+
 ├─ padroes_adotados/regras_verificacao.md
+
 ├─ prototipo_interfaces.pdf
+
 └─ casos_de_uso/
