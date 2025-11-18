@@ -1,112 +1,124 @@
-# Clínica Veterinária Animal Health Center — Projeto Final
+# 🏥 Clínica Veterinária Animal Health Center
 
-Sistema web para gerenciamento de uma clínica veterinária (agendamento, cadastro de clientes e pets, controle de estoque e prontuários, além de autenticação de usuários). 
-O sistema será simples, funcional e atenderá a todos os requisitos do trabalho: login obrigatório, CRUDs simples e CRUDs envolvendo múltiplas tabelas, além de testes unitários e de caixa-preta automatizados.
+## 1. CONTEXTO DO PROBLEMA/SOLUÇÃO
 
-teste samuel
+### 1.1. Contexto do Problema (A Dor do Cliente)
 
-animalHealthCenter/
+Em clínicas veterinárias de pequeno e médio porte, a gestão de informações é frequentemente fragmentada: agendamentos feitos em papel ou planilhas, prontuários armazenados em arquivos físicos, e o controle de estoque de medicamentos realizado manualmente. Essa desorganização resulta em:
+1. **Perda de Rastreabilidade:** Dificuldade em cruzar rapidamente o histórico do Pet com o Estoque, gerando erros de dosagem ou falta de insumos essenciais.
+2. **Dupla Entrada de Dados:** Recepcionistas e Veterinários repetem informações (cliente, pet, horário) em diferentes sistemas/papéis.
+3. **Alto Risco Operacional:** Agendamentos sobrepostos, dificuldade em identificar a validade de medicamentos e lentidão no atendimento ao cliente.
 
-├─ README.md
+### 1.2. Descrição da Solução
 
-├─ composer.json
+O **Animal Health Center** é um sistema web de gerenciamento projetado para centralizar todas as operações vitais da clínica.
 
-├─ .env.example
+Este sistema web deverá propiciar:
+* **Cadastro Integrado:** Gerenciamento centralizado (CRUDs) de Clientes, Pets e Produtos/Medicamentos.
+* **Gestão de Fluxo Clínico:** Um módulo de **Agendamento** (CRUD complexo) que vincula o Cliente, o Pet e o Veterinário, garantindo que não haja sobreposição de horários.
+* **Controle e Rastreabilidade:** Permite ao **Veterinário** registrar o **Prontuário** (CRUD complexo) do atendimento e, simultaneamente, realizar a **Baixa de Estoque** dos medicamentos utilizados, assegurando um inventário preciso e automatizado.
+* **Segurança:** Autenticação obrigatória (Login) para todos os usuários.
 
-├─ Dockerfile
+---
 
-├─ docker-compose.yml
+## 2. INSTRUÇÕES PARA USO (Usuário Final)
 
-├─ public/
+O **Animal Health Center** é uma aplicação web. Não há necessidade de instalação; basta acessar a URL e fazer o login.
 
-│ └─ index.php
+**Requisitos:**
+* Navegador web moderno (Chrome, Firefox, Edge, ou Safari).
+* Credenciais de acesso fornecidas pelo Administrador do Sistema.
 
-├─ app/
+**Passos para Acesso:**
 
-│ ├─ Models/
+1.  **Acessar a URL:** Abra seu navegador e acesse o endereço da aplicação (Ex: `https://animalhealthcenter.com.br` ou o endereço local fornecido pela equipe de infraestrutura).
+2.  **Login:** Na tela de login ([RF011] - I\_Login), insira seu nome de usuário (e-mail) e senha.
+3.  **Navegação:** Após o login, você será direcionado ao Painel Principal (Dashboard) com acesso às funcionalidades conforme seu perfil (Recepcionista, Veterinário, ou Admin).
 
-│ ├─ Http/Controllers/
+---
 
-│ ├─ Http/Middleware/
+## 3. INSTRUÇÕES PARA DEVS (Ambiente de Desenvolvimento)
 
-│ └─ Providers/
+Siga as instruções abaixo para preparar seu ambiente e ser um desenvolvedor do projeto. O projeto utiliza Docker para garantir a consistência do ambiente.
 
-├─ resources/
+### 3.1. Preparação
 
-│ ├─ views/ # HTML + Blade templates
+1.  **Clone o projeto:** Clone o repositório na sua máquina aplicando o comando:
+    ```bash
+    git clone [https://...](https://.../pt/what-is/repo/) animalHealthCenter
+    cd animalHealthCenter
+    ```
+2.  **Configurar Variáveis de Ambiente:** Copie o arquivo de exemplo para criar o arquivo de configuração:
+    ```bash
+    cp .env.example .env
+    ```
+    *Obs: Edite o arquivo `.env` para configurar as variáveis específicas do ambiente, se necessário.*
 
-│ ├─ css/
+### 3.2. Instalação e Execução com Docker (Recomendado)
 
-│ └─ js/
+O Docker simplifica a configuração do ambiente (PHP, Banco de Dados, Web Server).
 
-├─ routes/
+1.  **Executar o ambiente:** Execute o comando para construir as imagens e iniciar os contêineres:
+    ```bash
+    docker-compose up --build -d
+    ```
+2.  **Instalar Dependências e Chave:** Acesse o contêiner PHP e execute a instalação e configuração inicial:
+    ```bash
+    docker-compose exec app composer install
+    docker-compose exec app php artisan key:generate
+    ```
+3.  **Criar o Banco de Dados:** Execute as migrações para criar as tabelas no banco de dados:
+    ```bash
+    docker-compose exec app php artisan migrate
+    ```
+4.  **Acesso:** Em seguida, acesse o navegador e digite a URL: `http://localhost:8080`. Você deverá ver o sistema no seu browser.
 
-│ └─ web.php
+### 3.3. Execução Local (Opcional)
 
-├─ tests/
+Se preferir rodar localmente (assumindo PHP e Composer instalados):
 
-│ ├─ Unit/
+1.  **Instalar dependências:** Execute o comando para instalar as bibliotecas e outras dependências:
+    ```bash
+    composer install
+    ```
+2.  **Executar o servidor:** Para executar o projeto, execute o comando na raiz do projeto:
+    ```bash
+    php artisan serve
+    ```
+    Em seguida, acesse o browser e digite a URL `http://localhost:8000`.
 
-│ └─ Feature/ # testes de interface e comportamento
+---
 
-└─ docs/
+## 4. TECNOLOGIAS
 
-├─ requisitos.docx (ou .md)
+O projeto foi desenvolvido utilizando as seguintes tecnologias:
 
+* **Linguagem:** PHP
+* **Framework:** Laravel
+* **Frontend:** HTML, CSS, JavaScript puro, e Blade templates
+* **Contêineres:** Docker e Docker Compose
+* **Testes:** PHPUnit (Unitários e de Caixa-preta)
 
+---
 
-├─ padroes_adotados/regras_verificacao.md
+## 5. ORGANIZAÇÃO DO PROJETO
 
-├─ prototipo_interfaces.pdf
+Este projeto está organizado nas pastas descritas abaixo com as seguintes finalidades:
 
-└─ casos_de_uso/
-
-Como rodar (desenvolvimento)
-✅ Usando PHP/Laravel localmente
-
-Instale o Composer (https://getcomposer.org/)
-
-Clone o repositório e entre na pasta do projeto
-
-Execute:
-composer install
-cp .env.example .env
-php artisan key:generate
-php artisan migrate
-php artisan serve
-O sistema estará disponível em http://localhost:8000
-
-
-🐳 Com Docker
-docker-compose up --build
-A aplicação rodará em http://localhost:8080
-
-Testes
-Unitários: php artisan test ou vendor/bin/phpunit
-E2E / caixa-preta: scripts no diretório tests/Feature ou via Selenium (tests/e2e)
-
-Observações finais
-
-O design será simples (HTML/CSS/JS puro ou Blade templates), priorizando funcionalidade e rastreabilidade dos requisitos.
-
-Todas as issues do backlog deverão usar identificadores RFxx/RNFxx no título para rastreabilidade.
-
-O projeto deve conter pelo menos:
-
-Um CRUD simples (ex: produtos ou clientes)
-
-Um CRUD complexo (envolvendo pets, donos e agendamentos)
-
-Sistema de login
-
-Scripts de teste automatizado
-
-
-
-
-
-
-
-
-
-
+* **`app/`**: Contém o código-fonte principal da aplicação Laravel (Modelos, Controllers, Middleware, etc.).
+    * **`app/Models/`**: Definição das classes de dados (Entidades).
+    * **`app/Http/Controllers/`**: Lógica de negócio e manipulação de requisições.
+* **`resources/`**: Arquivos de *frontend*.
+    * **`resources/views/`**: Templates Blade e código HTML.
+    * **`resources/css/`**: Arquivos de estilo.
+    * **`resources/js/`**: Arquivos JavaScript.
+* **`routes/`**: Definição das rotas da aplicação (ex: `web.php`).
+* **`public/`**: Contém o `index.php` e os recursos acessíveis publicamente.
+* **`tests/`**: Arquivos e scripts de testes automatizados.
+    * **`tests/Unit/`**: Testes de classes e métodos isolados.
+    * **`tests/Feature/`**: Testes de interface e comportamento (caixa-preta/E2E).
+* **`docs/`**: Documentação do projeto, incluindo requisitos e padrões.
+    * **`docs/requisitos.docx`**: O documento de especificação de requisitos.
+    * **`docs/casos_de_uso/`**: Detalhamento dos casos de uso.
+* **`composer.json`**: Definição das dependências do PHP/Laravel.
+* **`docker-compose.yml`**: Configuração do ambiente de desenvolvimento com Docker.
