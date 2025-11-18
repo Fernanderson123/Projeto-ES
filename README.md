@@ -92,12 +92,33 @@ Se preferir rodar localmente (assumindo PHP e Composer instalados):
 ## 4. TECNOLOGIAS
 
 O projeto foi desenvolvido utilizando as seguintes tecnologias:
+Frontend:
 
-* **Linguagem:** PHP
-* **Framework:** Laravel
-* **Frontend:** HTML, CSS, JavaScript puro, e Blade templates
-* **Contêineres:** Docker e Docker Compose
-* **Testes:** PHPUnit (Unitários e de Caixa-preta)
+HTML5 (Padrão)
+
+CSS3 (Padrão)
+
+JavaScript (Padrão)
+
+Blade Templates (Framework Laravel)
+
+Backend:
+
+PHP versão 8.2.10 (ou superior)
+
+Laravel Framework versão 10.x (ou superior)
+
+Banco de Dados:
+
+MySQL (Geralmente utilizado em ambientes Laravel com Docker) versão 8.0
+
+Outras:
+
+Docker versão 24.0.0 (ou superior)
+
+Docker Compose versão 2.20.0 (ou superior)
+
+PHPUnit versão 10.x (Para testes unitários e de caixa-preta)
 
 ---
 
