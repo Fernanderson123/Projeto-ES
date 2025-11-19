@@ -4,14 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\ClienteController; // <--- IMPORTANTE: Adicionamos esta linha
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Aqui é onde você pode registrar as rotas web para sua aplicação.
-|
 */
 
 // --- ROTAS PÚBLICAS (GUESTS) ---
@@ -37,13 +35,25 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    // --- Rotas de Placeholder para os botões do Dashboard ---
-    // (Estas são as páginas que cada perfil pode acessar)
-
-    Route::get('/clientes', function () { 
-        return view('clientes.index'); 
-    })->name('clientes.index');
     
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    // --- ROTAS DE PERFIL (MINHA CONTA) ---
+    Route::get('/perfil', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/perfil', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+
+    // --- ROTAS FUNCIONAIS (CRUDs) ---
+
+    // Clientes (Agora usando o Controller real)
+    Route::resource('clientes', ClienteController::class);
+
+
+    // --- Rotas de Placeholder (Estáticas por enquanto) ---
+    // Estas rotas seguram os botões do dashboard para não dar erro 404
+    // Futuramente, trocaremos por Controllers reais (PetController, etc.)
+
     Route::get('/pets', function () { 
         return view('pets.index'); 
     })->name('pets.index');
@@ -60,12 +70,6 @@ Route::middleware(['auth'])->group(function () {
         return view('produtos.index'); 
     })->name('produtos.index');
     
-    // Rota de Medicamentos foi REMOVIDA, pois foi unificada com Produtos.
-    
-    Route::get('/gerenciar', function () { 
-        return view('gerenciar.index'); 
-    })->name('gerenciar.index');
-    
     Route::get('/relatorios', function () { 
         return view('relatorios.index'); 
     })->name('relatorios.index');
@@ -76,14 +80,24 @@ Route::middleware(['auth'])->group(function () {
 
 
     // --- ROTAS DE ADMIN (SÓ ADMIN ACESSA) ---
-    // Estas rotas já herdam o 'auth' do grupo pai, então só checamos 'admin'
-    Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
+   Route::middleware(['admin'])->prefix('gerenciar')->name('admin.')->group(function () {
         
-        // Rota para listar usuários
-        Route::get('/usuarios', [UserController::class, 'index'])->name('users.index');
+        // Listar Usuários (Index)
+        Route::get('/', [UserController::class, 'index'])->name('users.index'); // admin.users.index
 
-        // Rota para excluir usuário
-        Route::delete('/usuarios/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+        // Criar Usuário (Create & Store)
+        Route::get('/novo', [UserController::class, 'create'])->name('users.create');
+        Route::post('/novo', [UserController::class, 'store'])->name('users.store');
+
+        // Editar
+        Route::get('/{user}/editar', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('/{user}', [UserController::class, 'update'])->name('users.update');
+    
+        // NOVO: Reativar Usuário
+        Route::put('/{user}/ativar', [UserController::class, 'activate'])->name('users.activate');
+
+        // Excluir/Desativar
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     });
 
 }); // Fim do grupo principal de middleware 'auth'

@@ -65,7 +65,7 @@
             </a>
             <div class="d-flex align-items-center">
                 <div class="text-end me-3">
-                    <div class="small text-muted">Bem vindo(a) <strong class="text-dark">{{ Auth::user()->name }}</strong></div>
+                    <a class="small text-muted" href="{{ route('profile.edit') }}">Bem vindo(a) <strong class="text-dark">{{ Auth::user()->name }}</strong></a>
                     <div class="small text-muted">Perfil: <strong class="text-dark">{{ Auth::user()->perfil }}</strong></div>
                 </div>
                 <form action="{{ route('logout') }}" method="POST">
@@ -95,23 +95,13 @@
                 @endif
 
                 <div class="grid-container">
-                    {{-- Exibe o link de Gerenciar Usuários SOMENTE para Admin --}}
-                    @if (Auth::user()->perfil === 'Admin')
-                        <div class="alert alert-info text-center">
-                            <strong>Você é um Administrador.</strong>
-                            <a href="{{ route('admin.users.index') }}" class="btn btn-primary ms-3">
-                                Gerenciar Usuários
-                            </a>
-                        </div>
-                    @endif
-
                     {{-- Botões do Dashboard conforme o perfil --}}
                     <div class="row row-cols-1 row-cols-sm-2 g-4 justify-content-center">
 
                         @if (Auth::user()->perfil === 'Admin')
                             {{-- Administrador --}}
                             <div class="col"><a href="{{ route('produtos.index') }}" class="dashboard-button btn-green">Produtos</a></div>
-                            <div class="col"><a href="{{ route('gerenciar.index') }}" class="dashboard-button btn-admin-manage">Gerenciar</a></div>
+                            <div class="col"><a href="{{ route('admin.users.index') }}" class="dashboard-button btn-admin-manage">Gerenciar</a></div>
                             <div class="col"><a href="{{ route('relatorios.index') }}" class="dashboard-button btn-admin-reports">Relatórios</a></div>
                         @elseif (Auth::user()->perfil === 'Recepcionista')
                             {{-- Recepcionista --}}
