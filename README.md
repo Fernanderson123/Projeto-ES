@@ -120,7 +120,7 @@ Docker Compose versão 2.20.0 (ou superior)
 
 PHPUnit versão 10.x (Para testes unitários e de caixa-preta)
 
----
+----
 
 ## 5. ORGANIZAÇÃO DO PROJETO
 
