@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\PetController;
+use App\Http\Controllers\ProdutoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,12 +51,14 @@ Route::middleware(['auth'])->group(function () {
     // Clientes (Agora usando o Controller real)
     Route::resource('clientes', ClienteController::class);
 
-        // CRUD de Clientes
+    // CRUD de Clientes
     Route::resource('clientes', ClienteController::class);
 
-    // CRUD de Pets (NOVO)
+    // CRUD de Pets 
     Route::resource('pets', PetController::class);
 
+    // CRUD de Produtos 
+    Route::resource('produtos', ProdutoController::class);
 
     // --- Rotas de Placeholder (Estáticas por enquanto) ---
     // Estas rotas seguram os botões do dashboard para não dar erro 404
@@ -68,10 +71,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/prontuario', function () { 
         return view('prontuario.index'); 
     })->name('prontuario.index');
-    
-    Route::get('/produtos', function () { 
-        return view('produtos.index'); 
-    })->name('produtos.index');
     
     Route::get('/relatorios', function () { 
         return view('relatorios.index'); 
