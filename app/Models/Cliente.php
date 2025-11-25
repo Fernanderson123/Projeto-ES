@@ -23,14 +23,13 @@ class Cliente extends Model
         'endereco_estado',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    // Relacionamento: Um Cliente tem muitos Pets
     public function pets()
     {
         return $this->hasMany(Pet::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

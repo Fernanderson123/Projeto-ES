@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\AgendamentoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,13 +61,11 @@ Route::middleware(['auth'])->group(function () {
     // CRUD de Produtos 
     Route::resource('produtos', ProdutoController::class);
 
+    Route::resource('agendamentos', AgendamentoController::class);
+
     // --- Rotas de Placeholder (Estáticas por enquanto) ---
     // Estas rotas seguram os botões do dashboard para não dar erro 404
     // Futuramente, trocaremos por Controllers reais (PetController, etc.)
-
-    Route::get('/agendamentos', function () { 
-        return view('agendamentos.index'); 
-    })->name('agendamentos.index');
     
     Route::get('/prontuario', function () { 
         return view('prontuario.index'); 
