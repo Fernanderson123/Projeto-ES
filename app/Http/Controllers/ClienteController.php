@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class ClienteController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Lista todos os clientes.
      */
     public function index()
     {
@@ -17,20 +17,19 @@ class ClienteController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mostra o formulário de cadastro.
      */
     public function create()
     {
-        // Apenas mostra a view do formulário de cadastro
         return view('clientes.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Salva o novo cliente no banco.
      */
     public function store(Request $request)
     {
-        // 1. Validação dos dados
+        // 1. Validação
         $dadosValidados = $request->validate([
             'nome_completo' => 'required|string|max:255',
             'cpf' => 'required|string|max:14|unique:clientes',
@@ -44,43 +43,56 @@ class ClienteController extends Controller
             'endereco_estado' => 'nullable|string|max:2',
         ]);
 
-        // 2. Cria o cliente no banco
+        // 2. Criação
         Cliente::create($dadosValidados);
 
-        // 3. Redireciona de volta para a listagem com mensagem de sucesso
+        // 3. Redirecionamento
         return redirect()->route('clientes.index')
                          ->with('success', 'Cliente cadastrado com sucesso!');
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Cliente $cliente)
-    {
-        // (Não vamos usar por enquanto)
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * Mostra o formulário de edição.
      */
     public function edit(Cliente $cliente)
     {
-        // (Próximo passo)
+        return view('clientes.edit', compact('cliente'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Atualiza os dados do cliente.
      */
     public function update(Request $request, Cliente $cliente)
     {
-        // (Próximo passo)
+        // 1. Validação (ignora o ID atual para permitir manter o mesmo CPF/Email)
+        $dadosValidados = $request->validate([
+            'nome_completo' => 'required|string|max:255',
+            'cpf' => 'required|string|max:14|unique:clientes,cpf,' . $cliente->id,
+            'email' => 'nullable|email|max:255|unique:clientes,email,' . $cliente->id,
+            'telefone' => 'nullable|string|max:20',
+            'endereco_cep' => 'nullable|string|max:9',
+            'endereco_rua' => 'nullable|string|max:255',
+            'endereco_numero' => 'nullable|string|max:20',
+            'endereco_bairro' => 'nullable|string|max:100',
+            'endereco_cidade' => 'nullable|string|max:100',
+            'endereco_estado' => 'nullable|string|max:2',
+        ]);
+
+        // 2. Atualização
+        $cliente->update($dadosValidados);
+
+        // 3. Redirecionamento
+        return redirect()->route('clientes.index')
+                         ->with('success', 'Cliente atualizado com sucesso!');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove o cliente.
      */
     public function destroy(Cliente $cliente)
     {
-        // (Próximo passo)
+        $cliente->delete();
+        return redirect()->route('clientes.index')
+                         ->with('success', 'Cliente excluído com sucesso!');
     }
 }

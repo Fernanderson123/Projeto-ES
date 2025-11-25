@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\ClienteController; // <--- IMPORTANTE: Adicionamos esta linha
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\PetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,15 +50,17 @@ Route::middleware(['auth'])->group(function () {
     // Clientes (Agora usando o Controller real)
     Route::resource('clientes', ClienteController::class);
 
+        // CRUD de Clientes
+    Route::resource('clientes', ClienteController::class);
+
+    // CRUD de Pets (NOVO)
+    Route::resource('pets', PetController::class);
+
 
     // --- Rotas de Placeholder (Estáticas por enquanto) ---
     // Estas rotas seguram os botões do dashboard para não dar erro 404
     // Futuramente, trocaremos por Controllers reais (PetController, etc.)
 
-    Route::get('/pets', function () { 
-        return view('pets.index'); 
-    })->name('pets.index');
-    
     Route::get('/agendamentos', function () { 
         return view('agendamentos.index'); 
     })->name('agendamentos.index');

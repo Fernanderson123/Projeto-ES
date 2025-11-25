@@ -27,6 +27,7 @@ class RegisterController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'cpf' => 'required|string|unique:clientes,cpf',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
@@ -35,13 +36,20 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'perfil' => 'Cliente', // <-- AQUI A REGRA DE NEGÓCIO
+            'perfil' => 'Cliente',
+        ]);
+
+        \App\Models\Cliente::create([
+            'user_id' => $user->id,
+            'nome_completo' => $user->name,
+            'email' => $user->email,
+            'cpf' => $request->cpf,
         ]);
 
         // 3. Loga o usuário automaticamente
         Auth::login($user);
 
         // 4. Redireciona para o dashboard com a mensagem de sucesso
-        return redirect('/dashboard')->with('success', 'Sua conta de Cliente foi criada com sucesso!');
+        return redirect()->route('dashboard')->with('success', 'Conta criada! Complete seu cadastro na recepção.');
     }
 }

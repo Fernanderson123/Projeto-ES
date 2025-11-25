@@ -10,6 +10,7 @@ class Cliente extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'nome_completo',
         'cpf',
         'telefone',
@@ -21,6 +22,11 @@ class Cliente extends Model
         'endereco_cidade',
         'endereco_estado',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     // Relacionamento: Um Cliente tem muitos Pets
     public function pets()

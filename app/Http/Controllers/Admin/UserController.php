@@ -42,16 +42,24 @@ class UserController extends Controller
         ]);
 
         // 2. Criação
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'perfil' => $request->perfil, // Aqui salvamos o perfil escolhido
+            'perfil' => $request->perfil,
         ]);
 
-        // 3. Redirecionamento
-        return redirect()->route('admin.users.index')
-                         ->with('success', 'Usuário cadastrado com sucesso!');
+        // SE O PERFIL FOR CLIENTE, CRIA O REGISTRO NA TABELA CLIENTES
+        if ($request->perfil === 'Cliente') {
+            \App\Models\Cliente::create([
+                'user_id' => $user->id,
+                'nome_completo' => $user->name,
+                'email' => $user->email,
+                'cpf' => 'Gerado pelo Admin ' . uniqid(), // Placeholder temporário para passar na unique do banco, ou altere a migration para nullable
+            ]);
+        }
+
+        return redirect()->route('admin.users.index')->with('success', 'Usuário cadastrado!');
     }
 
     public function edit(User $user)
