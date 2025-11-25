@@ -4,13 +4,12 @@
 
 | ID da Tarefa | Tarefa | Status | Prioridade |
 | :--- | :--- | :--- | :--- |
-| `CRUD-C-01` | **CRUD de Clientes (Finalizar Edição e Testes)** | `Retomado` | Alta |
+| `CRUD-P-01` | **CRUD de Pets (Controller e Views)** | `Em Andamento` | Alta |
 
 ## Backlog (Tarefas a Fazer)
 
 | ID da Tarefa | Tarefa | Status | Prioridade |
 | :--- | :--- | :--- | :--- |
-| `CRUD-P-01` | CRUD de Pets (vincular ao Cliente) | `Backlog` | Alta |
 | `CRUD-PROD-01`| CRUD de Produtos (Gerenciamento de estoque) | `Backlog` | Média |
 | `AGENDA-01` | Módulo de Agendamentos (Criar, Listar) | `Backlog` | Média |
 | `PRONT-01` | Módulo de Prontuário (Criar, Visualizar) | `Backlog` | Média |
@@ -25,6 +24,7 @@
 | `ADMIN-05` | **Admin: Reativar Usuários e Layout Restaurado** | `Feito` |
 | `ADMIN-04` | Editar Usuários Admin (Update & Edit View) | `Feito` |
 | `ADMIN-03` | Refatorar "Gerenciar" (Listagem e Criação) | `Feito` |
+| `CRUD-C-01` | **CRUD de Clientes (Criar, Listar, Editar, Excluir)** | `Feito` |
 | `PROJ-01` | Configuração inicial do projeto (Laravel 11) | `Feito` |
 | `AUTH-01` | Implementação de Login e Logout (Manual) | `Feito` |
 | `AUTH-02` | Implementação de Registro (com perfil 'Cliente') | `Feito` |
