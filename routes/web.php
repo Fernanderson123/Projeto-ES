@@ -9,7 +9,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\AgendamentoController;
-use App\Http\Controllers\ProntuarioController; // <--- Importante: Importar o Controller
+use App\Http\Controllers\ProntuarioController; 
+use App\Http\Controllers\RelatorioController;
 
 // --- ROTAS PÚBLICAS (GUESTS) ---
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -54,13 +55,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/agendamentos/{agendamento}/finalizar', [AgendamentoController::class, 'finalizar'])
      ->name('agendamentos.finalizar');
      
-// Rota que salva o prontuário e conclui o agendamento
+    // Rota que salva o prontuário e conclui o agendamento
     Route::post('/agendamentos/{agendamento}/finalizar', [AgendamentoController::class, 'storeFinalizacao'])
      ->name('agendamentos.storeFinalizacao');
 
+    // Relatórios e Métricas
+    Route::get('/relatorios', [RelatorioController::class, 'index'])->name('relatorios.index');
+
     // --- Rotas de Placeholder (Relatórios) ---
     // (Os outros módulos já têm controllers reais, sobrou apenas relatórios)
-    Route::get('/relatorios', function () { return view('relatorios.index'); })->name('relatorios.index');
     Route::get('/historico-consultas', function () { return view('historico_consultas.index'); })->name('historico_consultas.index');
 
     // --- ROTAS DE GERENCIAMENTO (ADMIN) ---
