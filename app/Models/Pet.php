@@ -18,6 +18,14 @@ class Pet extends Model
         'data_nascimento',
     ];
 
+    // Relação auxiliar para pegar o último atendimento concluído
+    public function ultimoAtendimento()
+    {
+        return $this->hasOne(Agendamento::class)
+                    ->where('status', 'Concluído')
+                    ->latest('data_hora');
+    }
+
     // Relacionamento: Um Pet pertence a um Cliente
     public function cliente()
     {

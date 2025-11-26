@@ -11,7 +11,6 @@ class AgendamentoController extends Controller
 {
     public function index()
     {
-        // Traz agendamentos ordenados por data (mais recentes primeiro)
         $agendamentos = Agendamento::with(['pet.cliente', 'veterinario'])
                                    ->orderBy('data_hora', 'desc')
                                    ->get();
@@ -21,7 +20,6 @@ class AgendamentoController extends Controller
 
     public function create()
     {
-        // Lista todos os pets (com donos) e todos os veterinários
         $pets = Pet::with('cliente')->orderBy('nome', 'asc')->get();
         $veterinarios = User::where('perfil', 'Veterinário')->orderBy('name', 'asc')->get();
         
@@ -33,7 +31,7 @@ class AgendamentoController extends Controller
         $request->validate([
             'pet_id' => 'required|exists:pets,id',
             'veterinario_id' => 'required|exists:users,id',
-            'data_hora' => 'required|date|after:now', // Não pode agendar no passado
+            'data_hora' => 'required|date',
             'tipo' => 'required|string',
             'observacoes' => 'nullable|string',
         ]);
@@ -44,5 +42,57 @@ class AgendamentoController extends Controller
                          ->with('success', 'Agendamento realizado com sucesso!');
     }
 
-    // Implementaremos edit/update/destroy na próxima etapa
+    // --- MÉTODOS NOVOS ABAIXO ---
+
+    /**
+     * Mostra o formulário de edição.
+     */
+    public function edit(Agendamento $agendamento)
+    {
+        $pets = Pet::with('cliente')->orderBy('nome', 'asc')->get();
+        $veterinarios = User::where('perfil', 'Veterinário')->orderBy('name', 'asc')->get();
+
+        return view('agendamentos.edit', compact('agendamento', 'pets', 'veterinarios'));
+    }
+
+    /**
+     * Atualiza o agendamento.
+     */
+    public function update(Request $request, Agendamento $agendamento)
+    {
+        $request->validate([
+            'pet_id' => 'required|exists:pets,id',
+            'veterinario_id' => 'required|exists:users,id',
+            'data_hora' => 'required|date',
+            'tipo' => 'required|string',
+            'status' => 'required|string', // Permite editar status manualmente se precisar
+            'observacoes' => 'nullable|string',
+        ]);
+
+        $agendamento->update($request->all());
+
+        return redirect()->route('agendamentos.index')
+                         ->with('success', 'Agendamento atualizado com sucesso!');
+    }
+
+    /**
+     * Remove o agendamento.
+     */
+    public function destroy(Agendamento $agendamento)
+    {
+        $agendamento->delete();
+        return redirect()->route('agendamentos.index')
+                         ->with('success', 'Agendamento cancelado e removido!');
+    }
+
+    /**
+     * Marca um agendamento como Concluído (Via botão rápido).
+     */
+    public function concluir(Agendamento $agendamento)
+    {
+        $agendamento->status = 'Concluído';
+        $agendamento->save();
+
+        return back()->with('success', 'Atendimento concluído! O histórico do pet foi atualizado.');
+    }
 }

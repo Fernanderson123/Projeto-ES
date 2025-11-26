@@ -63,6 +63,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('agendamentos', AgendamentoController::class);
 
+    Route::patch('/agendamentos/{agendamento}/concluir', [AgendamentoController::class, 'concluir']) ->name('agendamentos.concluir');
+
     // --- Rotas de Placeholder (Estáticas por enquanto) ---
     // Estas rotas seguram os botões do dashboard para não dar erro 404
     // Futuramente, trocaremos por Controllers reais (PetController, etc.)

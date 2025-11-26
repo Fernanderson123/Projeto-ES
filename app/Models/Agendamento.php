@@ -19,16 +19,14 @@ class Agendamento extends Model
     ];
 
     protected $casts = [
-        'data_hora' => 'datetime', // Facilita formatação de data
+        'data_hora' => 'datetime',
     ];
 
-    // Relacionamento: Pertence a um Pet
     public function pet()
     {
         return $this->belongsTo(Pet::class);
     }
 
-    // Relacionamento: Pertence a um Veterinário (User)
     public function veterinario()
     {
         return $this->belongsTo(User::class, 'veterinario_id');
