@@ -4,19 +4,19 @@
 
 | ID da Tarefa | Tarefa | Status | Prioridade |
 | :--- | :--- | :--- | :--- |
-| `PRONT-01` | **Módulo de Prontuário (Estrutura e Lógica)** | `Em Andamento` | Alta |
+| `RELAT-01` | Módulo de Relatórios (Apenas visualização) | `Backlog` | Média |
 
 ## Backlog (Tarefas a Fazer)
 
 | ID da Tarefa | Tarefa | Status | Prioridade |
 | :--- | :--- | :--- | :--- |
-| `RELAT-01` | Módulo de Relatórios (Apenas visualização) | `Backlog` | Média |
 | `AUTH-05` | Implementar "Esqueci minha senha" | `Backlog` | Baixa |
 
 ## Feito (Tarefas Concluídas)
 
 | ID da Tarefa | Tarefa | Status |
 | :--- | :--- | :--- |
+| `PRONT-01` | **Módulo de Prontuário (Estrutura e Lógica)** | `Em Andamento` | Alta |
 | `AGENDA-01` | Módulo de Agendamentos (Completo) | `Feito` |
 | `CRUD-PROD-01`| CRUD de Produtos (Medicamentos/Estoque) | `Em Andamento` | Média |
 | `CRUD-C-01` | CRUD de Clientes (Refatoração Visual Completa) | `Feito` |
