@@ -131,7 +131,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">CPF <span class="text-danger">*</span></label>
-                                <input type="text" name="cpf" class="form-control" value="{{ old('cpf') }}" required>
+                                <input type="text" class="form-control" id="cpf" name="cpf" required maxlength="14" oninput="mascaraCPF(this)" value="{{ old('cpf', $cliente->cpf) }}" >
                             </div>
                         </div>
 

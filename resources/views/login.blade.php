@@ -49,7 +49,7 @@
 
                     </form>
                     <div class="text-center mt-4">
-                            <a href="#" class="text-decoration-none text-muted d-block mb-2">
+                            <a href="{{ route('password.request') }}" class="text-decoration-none text-muted d-block mb-2">
                                 Esqueceu a senha?
                             </a>
                             <a href="{{ route('register.show') }}" class="text-decoration-none">

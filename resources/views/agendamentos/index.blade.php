@@ -162,23 +162,27 @@
                                     <!-- Ações -->
                                     <td class="text-end">
                                         
-                                        <!-- 1. Botão Check (Concluir/Prontuário) -->
-                                        <!-- Só aparece se estiver Agendado -->
-                                        @if($agenda->status === 'Agendado')
-                                            <a href="{{ route('prontuario.create', ['agendamento_id' => $agenda->id]) }}" class="btn btn-link p-0 border-0 me-2 text-decoration-none" title="Finalizar e Gerar Prontuário">
-                                                <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                                        <!-- Ações para Funcionários (Vet/Admin/Recep) -->
+                                        @if(Auth::user()->perfil !== 'Cliente')
+                                            
+                                            <!-- Botão Concluir (Check) -->
+                                            @if($agenda->status === 'Agendado')
+                                                <a href="{{ route('prontuario.create', ['agendamento_id' => $agenda->id]) }}" class="btn btn-link p-0 border-0 me-2 text-decoration-none" title="Finalizar e Gerar Prontuário">
+                                                    <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                                                </a>
+                                            @endif
+
+                                            <!-- Botão Editar -->
+                                            <a href="{{ route('agendamentos.edit', $agenda->id) }}" class="btn btn-link p-0 border-0 me-2 text-decoration-none" title="Editar">
+                                                <i class="bi bi-pencil-square text-dark fs-5"></i>
                                             </a>
+
                                         @endif
 
-                                        <!-- 2. Botão Editar -->
-                                        <a href="{{ route('agendamentos.edit', $agenda->id) }}" class="btn btn-link p-0 border-0 me-2 text-decoration-none" title="Editar">
-                                            <i class="bi bi-pencil-square text-dark fs-5"></i>
-                                        </a>
-
-                                        <!-- 3. Botão Excluir -->
+                                        <!-- Botão Excluir/Cancelar (Disponível para todos se estiver agendado) -->
+                                        <!-- Regra de negócio: Cliente pode cancelar seu próprio agendamento se ainda não aconteceu? Vamos permitir. -->
                                         <form action="{{ route('agendamentos.destroy', $agenda->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Cancelar este agendamento?');">
-                                            @csrf
-                                            @method('DELETE')
+                                            @csrf @method('DELETE')
                                             <button type="submit" class="btn btn-link p-0 border-0 text-decoration-none" title="Excluir">
                                                 <i class="bi bi-trash3 text-danger fs-5"></i>
                                             </button>

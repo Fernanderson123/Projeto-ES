@@ -4,12 +4,13 @@
 
 | ID da Tarefa | Tarefa | Status | Prioridade |
 | :--- | :--- | :--- | :--- |
-| `AUTH-05` | Implementar "Esqueci minha senha" | `Em andamento` | Baixa |
+| `AGENDA-05` | Regras de Agendamento (Horários, Duração e Conflitos) | `Pausado` | Alta |
 
 ## Backlog (Tarefas a Fazer)
 
 | ID da Tarefa | Tarefa | Status | Prioridade |
 | :--- | :--- | :--- | :--- |
+| `AUTH-05` | Implementar "Esqueci minha senha" | `Pausado` | Baixa |
 
 ## Feito (Tarefas Concluídas)
 

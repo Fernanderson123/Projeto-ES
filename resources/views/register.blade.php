@@ -41,7 +41,7 @@
 
                         <div class="mb-3">
                            <label for="cpf" class="form-label">CPF</label>
-                           <input type="text" class="form-control" id="cpf" name="cpf" required>
+                           <<input type="text" class="form-control" id="cpf" name="cpf" required maxlength="14" oninput="mascaraCPF(this)" placeholder="000.000.000-00">
                         </div>
 
                         <div class="mb-3">

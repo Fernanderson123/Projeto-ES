@@ -11,6 +11,7 @@ use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\AgendamentoController;
 use App\Http\Controllers\ProntuarioController; 
 use App\Http\Controllers\RelatorioController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 // --- ROTAS PÚBLICAS (GUESTS) ---
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -18,6 +19,24 @@ Route::post('/login', [LoginController::class, 'login']);
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register.show');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.store');
+
+// 1. Solicitar Link
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])
+     ->middleware('guest')
+     ->name('password.request');
+
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])
+     ->middleware('guest')
+     ->name('password.email');
+
+// 2. Redefinir Senha
+Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])
+     ->middleware('guest')
+     ->name('password.reset');
+
+Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])
+     ->middleware('guest')
+     ->name('password.update');
 
 // --- ROTAS PROTEGIDAS (SÓ ACESSA LOGADO) ---
 Route::middleware(['auth'])->group(function () {
