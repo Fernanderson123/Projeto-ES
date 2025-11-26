@@ -95,4 +95,53 @@ class AgendamentoController extends Controller
 
         return back()->with('success', 'Atendimento concluído! O histórico do pet foi atualizado.');
     }
+
+    /**
+     * Mostra a tela de finalização (Prontuário Obrigatório).
+     */
+    public function finalizar(Agendamento $agendamento)
+    {
+        // Carrega o pet e o cliente para mostrar na tela
+        $agendamento->load(['pet.cliente']);
+        return view('agendamentos.finalizar', compact('agendamento'));
+    }
+
+    /**
+     * Salva o prontuário e muda o status para Concluído.
+     */
+    public function storeFinalizacao(Request $request, Agendamento $agendamento)
+    {
+        // 1. Valida os dados do prontuário
+        $request->validate([
+            'sintomas' => 'required|string',
+            'diagnostico' => 'nullable|string',
+            'tratamento' => 'nullable|string',
+            'observacoes' => 'nullable|string',
+        ]);
+
+        // 2. Cria o Prontuário vinculado
+        \App\Models\Prontuario::create([
+            'pet_id' => $agendamento->pet_id,
+            'veterinario_id' => \Illuminate\Support\Facades\Auth::id(), // Quem está finalizando
+            'agendamento_id' => $agendamento->id,
+            'data_atendimento' => now(),
+            'sintomas' => $request->sintomas,
+            'diagnostico' => $request->diagnostico,
+            'tratamento' => $request->tratamento,
+            'observacoes' => $request->observacoes,
+        ]);
+
+        // 3. Atualiza o Agendamento para Concluído
+        $agendamento->status = 'Concluído';
+        
+        // Se não tinha veterinário atribuído, atribui quem finalizou
+        if (!$agendamento->veterinario_id) {
+            $agendamento->veterinario_id = \Illuminate\Support\Facades\Auth::id();
+        }
+        
+        $agendamento->save();
+
+        return redirect()->route('agendamentos.index')
+                         ->with('success', 'Consulta finalizada e prontuário registrado com sucesso!');
+    }
 }

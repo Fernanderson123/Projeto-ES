@@ -17,10 +17,10 @@
 
 | ID da Tarefa | Tarefa | Status |
 | :--- | :--- | :--- |
-| `AGENDA-01` | **Módulo de Agendamentos (Completo)** | `Feito` |
-| `CRUD-PROD-01`| **CRUD de Produtos (Medicamentos/Estoque)** | `Em Andamento` | Média |
-| `CRUD-C-01` | **CRUD de Clientes (Refatoração Visual Completa)** | `Feito` |
-| `CRUD-P-01` | **CRUD de Pets (Completo)** | `Feito` |
+| `AGENDA-01` | Módulo de Agendamentos (Completo) | `Feito` |
+| `CRUD-PROD-01`| CRUD de Produtos (Medicamentos/Estoque) | `Em Andamento` | Média |
+| `CRUD-C-01` | CRUD de Clientes (Refatoração Visual Completa) | `Feito` |
+| `CRUD-P-01` | CRUD de Pets (Completo) | `Feito` |
 | `USER-01` | Gerenciamento de Perfil | `Feito` |
 | `ADMIN-05` | Admin: Reativar Usuários | `Feito` |
 | `ADMIN-04` | Editar Usuários Admin (Update & Edit View) | `Feito` |

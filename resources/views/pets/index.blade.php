@@ -2,78 +2,25 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pets - Animal Health Center</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     
     <style>
-        body {
-            background-color: #fcfaf6; /* Fundo Bege */
-            font-family: 'Georgia', serif;
-        }
-        /* Título da Página */
-        .page-title {
-            font-family: sans-serif;
-            font-size: 2rem;
-            margin-top: 3rem;
-            margin-bottom: 1.5rem;
-            color: #000;
-            margin-left: 1rem; /* Pequeno ajuste para alinhar com o card */
-        }
-        /* Card Branco */
-        .list-card {
-            background-color: white;
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-            border: none;
-        }
-        /* Tabela Clean */
-        .table th {
-            border-top: none;
-            border-bottom: none;
-            font-family: sans-serif;
-            font-weight: bold;
-            font-size: 0.95rem;
-            color: #1a1a1a;
-            padding-bottom: 1rem;
-        }
-        .table td {
-            vertical-align: middle;
-            border-bottom: none;
-            padding: 1rem 0.5rem;
-            font-family: sans-serif;
-            color: #333;
-            font-size: 0.95rem;
-        }
-        /* Ícones de Ação */
-        .action-icon {
-            color: #666;
-            font-size: 1.25rem;
-            margin-left: 15px;
-            cursor: pointer;
-            transition: color 0.2s;
-            text-decoration: none;
-        }
+        body { background-color: #fcfaf6; font-family: 'Georgia', serif; }
+        .page-title { font-family: sans-serif; font-size: 2rem; margin-top: 3rem; margin-bottom: 1.5rem; color: #000; margin-left: 1rem; }
+        .list-card { background-color: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: none; }
+        .table th { border-top: none; border-bottom: none; font-family: sans-serif; font-weight: bold; font-size: 0.95rem; color: #1a1a1a; padding-bottom: 1rem; }
+        .table td { vertical-align: middle; border-bottom: none; padding: 1rem 0.5rem; font-family: sans-serif; color: #333; font-size: 0.95rem; }
+        .action-icon { color: #666; font-size: 1.25rem; margin-left: 15px; cursor: pointer; transition: color 0.2s; text-decoration: none; }
         .action-icon:hover { color: #000; }
-        
-        /* Botão Novo (Flutuante ou discreto) */
-        .btn-new {
-            background-color: #1a1a1a;
-            color: white;
-            border-radius: 50px;
-            padding: 8px 20px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: background 0.2s;
-        }
-        .btn-new:hover { background-color: #333; color: white; }
+        .btn-new { background-color: #a78bfa; color: white; border-radius: 50px; padding: 8px 25px; text-decoration: none; font-size: 0.9rem; transition: background 0.2s; font-family: sans-serif; font-weight: 500; }
+        .btn-new:hover { background-color: #9061f9; color: white; }
+        .navbar-brand { color: #1a1a1a !important; }
     </style>
 </head>
 <body>
 
-    <!-- Header Padronizado -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container-fluid mx-5">
             <a class="navbar-brand" href="{{ route('dashboard') }}" style="font-family: Georgia, serif; font-size: 1.5rem;">
@@ -94,12 +41,10 @@
         </div>
     </nav>
 
-    <!-- Conteúdo Principal -->
     <div class="container">
         
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="page-title">Pets</h2>
-            <!-- Botão Novo Pet (Para manter a funcionalidade) -->
             <a href="{{ route('pets.create') }}" class="btn-new mt-4 me-2">
                 + Novo Pet
             </a>
@@ -125,20 +70,15 @@
                         <tbody>
                             @forelse ($pets as $pet)
                                 <tr>
-                                    <!-- Nome -->
                                     <td class="fw-medium">{{ $pet->nome }}</td>
-                                    
-                                    <!-- Info Extra (Para não perder dados importantes) -->
                                     <td class="text-muted small">{{ $pet->especie }} - {{ $pet->raca ?? 'SRD' }}</td>
-
-                                    <!-- Dono -->
+                                    
                                     <td>
                                         <a href="{{ route('clientes.edit', $pet->cliente_id) }}" class="text-dark text-decoration-none">
                                             {{ $pet->cliente->nome_completo }}
                                         </a>
                                     </td>
 
-                                    <!-- Ações (Ícones iguais à imagem) -->
                                     <td class="text-end">
                                         <form action="{{ route('pets.destroy', $pet->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Remover este pet?');">
                                             @csrf
@@ -153,16 +93,23 @@
                                         </a>
                                     </td>
 
-                                    <!-- Última Ação (Placeholder para futuro módulo) -->
+                                    <!-- LÓGICA CORRIGIDA AQUI -->
                                     <td class="text-end fw-bold">
-                                        {{-- Futuramente: $pet->ultimoAgendamento->tipo --}}
-                                        Vacina
+                                        @if($pet->ultimoAtendimento)
+                                            <span class="text-success">{{ $pet->ultimoAtendimento->tipo }}</span>
+                                            <br>
+                                            <small class="text-muted fw-normal" style="font-size: 0.75rem;">
+                                                {{ $pet->ultimoAtendimento->data_hora->format('d/m/Y') }}
+                                            </small>
+                                        @else
+                                            <span class="text-muted fw-normal small">--</span>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
                                     <td colspan="5" class="text-center text-muted py-5">
-                                        Nenhum pet encontrado.
+                                        Nenhum pet cadastrado.
                                     </td>
                                 </tr>
                             @endforelse
