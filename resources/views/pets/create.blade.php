@@ -4,177 +4,84 @@
     <meta charset="UTF-8">
     <title>Novo Pet - Animal Health Center</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    
     <style>
-        body { 
-            background-color: #fcfaf6; /* Fundo Bege */
-            font-family: 'Georgia', serif; 
-        }
-        
-        /* Títulos */
-        h2, h5 { font-family: 'Georgia', serif; color: #1a1a1a; }
-        
-        /* Card do Formulário */
-        .form-card { 
-            background: white; 
-            padding: 2.5rem; 
-            border-radius: 12px; 
-            border: none; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02); 
-        }
-        
-        /* Labels e Inputs */
-        label { 
-            font-family: sans-serif; 
-            font-weight: 600; 
-            font-size: 0.9rem; 
-            color: #4a4a4a; 
-            margin-bottom: 0.4rem;
-        }
-        .form-control, .form-select {
-            border-radius: 8px;
-            padding: 0.6rem 1rem;
-            border: 1px solid #e0e0e0;
-        }
-        .form-control:focus, .form-select:focus {
-            border-color: #a78bfa;
-            box-shadow: 0 0 0 0.2rem rgba(167, 139, 250, 0.25);
-        }
-
-        /* Botão Padrão (Cor do Login - Roxo Suave) */
-        .btn-custom {
-            background-color: #a78bfa; /* Roxo do Login */
-            border-color: #a78bfa;
-            color: white;
-            font-family: sans-serif;
-            font-weight: bold;
-            border-radius: 8px;
-            transition: all 0.2s;
-        }
-        .btn-custom:hover {
-            background-color: #9061f9; /* Roxo mais escuro no hover */
-            border-color: #9061f9;
-            color: white;
-        }
-
-        /* Link de Voltar */
-        .link-back {
-            color: #1a1a1a;
-            text-decoration: none;
-            font-family: sans-serif;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        .link-back:hover { color: #666; }
-        
-        /* Header Styles */
-        .navbar-brand { color: #1a1a1a !important; }
+        body { background-color: #fcfaf6; font-family: 'Georgia', serif; }
+        .page-title { font-family: sans-serif; margin-bottom: 1.5rem; color: #1a1a1a; }
+        .form-card { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border: none; max-width: 800px; margin: 0 auto; }
+        .form-label { font-family: sans-serif; font-weight: bold; font-size: 0.9rem; color: #555; }
+        .btn-save { background-color: #a78bfa; color: white; border: none; border-radius: 50px; padding: 10px 30px; font-weight: bold; font-family: sans-serif; }
+        .btn-save:hover { background-color: #9061f9; color: white; }
+        .btn-back { font-family: sans-serif; text-decoration: none; color: #666; margin-right: 15px; }
     </style>
 </head>
 <body>
-
-    <!-- Header Padronizado -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-5">
-        <div class="container-fluid mx-5">
-            <a class="navbar-brand" href="{{ route('dashboard') }}" style="font-family: Georgia, serif; font-size: 1.5rem;">
-                Animal Health Center 🐾
-            </a>
-            <div class="d-flex align-items-center">
-                <div class="text-end me-3">
-                    <a class="small text-muted text-decoration-none" href="{{ route('profile.edit') }}">
-                        Bem vindo(a) <strong class="text-dark">{{ Auth::user()->name }}</strong>
-                    </a>
-                    <div class="small text-muted">Perfil: <strong class="text-dark">{{ Auth::user()->perfil }}</strong></div>
-                </div>
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-danger btn-sm">Sair</button>
-                </form>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
+    <div class="container py-5">
+        <div class="d-flex justify-content-center">
+            <div class="col-12 col-md-8">
+                <h2 class="page-title text-center">Cadastrar Novo Pet 🐾</h2>
                 
-                <!-- Link de Voltar -->
-                <a href="{{ route('pets.index') }}" class="link-back">
-                    <i class="bi bi-arrow-left me-2"></i> Voltar para Lista de Pets
-                </a>
-
-                <h2 class="mb-4 text-center">Cadastrar Novo Pet</h2>
-
-                <!-- Alerta de Erros -->
-                @if ($errors->any())
-                    <div class="alert alert-danger rounded-3 border-0 mb-4">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error) <li>{{ $error }}</li> @endforeach
-                        </ul>
-                    </div>
-                @endif
-
                 <div class="form-card">
                     <form action="{{ route('pets.store') }}" method="POST">
                         @csrf
-
-                        <!-- Seleção do Dono -->
+                        
                         <div class="mb-4">
-                            <label class="form-label">Dono (Cliente) <span class="text-danger">*</span></label>
-                            <select name="cliente_id" class="form-select" required>
-                                <option value="" selected disabled>Selecione o cliente...</option>
-                                @foreach ($clientes as $cliente)
-                                    <option value="{{ $cliente->id }}">{{ $cliente->nome_completo }} (CPF: {{ $cliente->cpf }})</option>
-                                @endforeach
-                            </select>
-                            <div class="form-text ms-1 text-muted small">O pet será vinculado a este cliente.</div>
+                            <label class="form-label">Tutor (Dono)</label>
+                            @if(Auth::user()->isCliente())
+                                <input type="text" class="form-control bg-light" value="{{ Auth::user()->cliente->nome_completo }}" disabled>
+                                @else
+                                <select name="cliente_id" class="form-select" required>
+                                    <option value="">Selecione um cliente...</option>
+                                    @foreach($clientes as $cliente)
+                                        <option value="{{ $cliente->id }}">{{ $cliente->nome_completo }} (CPF: {{ $cliente->cpf }})</option>
+                                    @endforeach
+                                </select>
+                            @endif
+                            @error('cliente_id') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                         </div>
 
-                        <h5 class="border-bottom pb-2 mb-4">Dados do Animal</h5>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Nome do Pet <span class="text-danger">*</span></label>
-                                <input type="text" name="nome" class="form-control" placeholder="Ex: Rex" required>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="nome" class="form-label">Nome do Pet</label>
+                                <input type="text" class="form-control" id="nome" name="nome" placeholder="Ex: Rex, Luna..." required>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Espécie <span class="text-danger">*</span></label>
-                                <select name="especie" class="form-select" required>
-                                    <option value="" selected disabled>Selecione...</option>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="especie" class="form-label">Espécie</label>
+                                <select class="form-select" id="especie" name="especie" required>
                                     <option value="Cachorro">Cachorro</option>
                                     <option value="Gato">Gato</option>
-                                    <option value="Pássaro">Pássaro</option>
+                                    <option value="Ave">Ave</option>
+                                    <option value="Roedor">Roedor</option>
                                     <option value="Outro">Outro</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="row mb-4">
-                            <div class="col-md-4">
-                                <label class="form-label">Raça</label>
-                                <input type="text" name="raca" class="form-control" placeholder="Ex: Labrador">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="raca" class="form-label">Raça (Opcional)</label>
+                                <input type="text" class="form-control" id="raca" name="raca" placeholder="Ex: Labrador, Siamês">
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Peso (kg)</label>
-                                <input type="number" step="0.01" name="peso" class="form-control" placeholder="0.00">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Data Nascimento</label>
-                                <input type="date" name="data_nascimento" class="form-control">
+
+                            <div class="col-md-6 mb-3">
+                                <label for="peso" class="form-label">Peso (kg) (Opcional)</label>
+                                <input type="number" step="0.1" class="form-control" id="peso" name="peso">
                             </div>
                         </div>
 
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-custom py-2 fs-5">Salvar Cadastro</button>
+                        <div class="mb-4">
+                            <label for="data_nascimento" class="form-label">Data de Nascimento (Aproximada)</label>
+                            <input type="date" class="form-control" id="data_nascimento" name="data_nascimento">
+                        </div>
+
+                        <div class="text-end">
+                            <a href="{{ route('pets.index') }}" class="btn-back">Cancelar</a>
+                            <button type="submit" class="btn-save">Salvar Pet</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
 </body>
 </html>

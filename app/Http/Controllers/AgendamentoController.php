@@ -5,147 +5,155 @@ namespace App\Http\Controllers;
 use App\Models\Agendamento;
 use App\Models\Pet;
 use App\Models\User;
-use App\Models\Cliente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class AgendamentoController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
-        $query = Agendamento::with(['pet.cliente', 'veterinario'])
-                            ->orderBy('data_hora', 'desc');
 
-        // Lógica de Segurança: Se for Cliente, vê apenas os seus
-        if ($user->perfil === 'Cliente') {
-            // 1. Encontra o registro de Cliente vinculado a este User
-            $cliente = Cliente::where('user_id', $user->id)->first();
-
-            if ($cliente) {
-                // 2. Filtra agendamentos onde o pet pertence a este cliente
-                $query->whereHas('pet', function($q) use ($cliente) {
-                    $q->where('cliente_id', $cliente->id);
-                });
-            } else {
-                // Se não tiver cadastro de cliente vinculado, não vê nada
-                $query->where('id', 0); 
-            }
+        if ($user->isCliente()) {
+            $meusPetsIds = $user->cliente ? $user->cliente->pets->pluck('id') : [];
+            
+            $agendamentos = Agendamento::with(['pet', 'veterinario'])
+                ->whereIn('pet_id', $meusPetsIds)
+                ->orderBy('data_hora', 'desc')
+                ->get();
+        } else {
+            $agendamentos = Agendamento::with(['pet.cliente', 'veterinario'])
+                ->orderBy('data_hora', 'desc')
+                ->get();
         }
 
-        $agendamentos = $query->get();
-                                   
         return view('agendamentos.index', compact('agendamentos'));
     }
 
-    // ... (Mantenha os outros métodos create, store, edit, update, destroy, finalizar, storeFinalizacao, concluir)
-    
     public function create()
     {
-        $user = Auth::user();
-        
-        // Se for cliente, só pode agendar para os SEUS pets
-        if ($user->perfil === 'Cliente') {
-            $cliente = Cliente::where('user_id', $user->id)->first();
-            if ($cliente) {
-                $pets = Pet::where('cliente_id', $cliente->id)->orderBy('nome', 'asc')->get();
-            } else {
-                $pets = collect(); // Lista vazia
-            }
+        if (Auth::user()->isCliente()) {
+            $pets = Auth::user()->cliente ? Auth::user()->cliente->pets : collect();
         } else {
-            // Admin/Recep/Vet vê todos os pets
-            $pets = Pet::with('cliente')->orderBy('nome', 'asc')->get();
+            $pets = Pet::with('cliente')->orderBy('nome')->get();
         }
-
-        $veterinarios = User::where('perfil', 'Veterinário')->orderBy('name', 'asc')->get();
+        
+        $veterinarios = User::where('perfil', 'Veterinário')->get();
         
         return view('agendamentos.create', compact('pets', 'veterinarios'));
     }
 
-    // ... (O método store pode precisar de validação extra se for muito rigoroso, mas por enquanto a validação de ID do pet já ajuda) ...
-    
+    /**
+     * Salva com TODAS as Regras de Negócio:
+     * 1. Horário Comercial (08-22h).
+     * 2. Duração dinâmica (Cirurgia 5h vs Consulta 1h).
+     * 3. Anti-Colisão de Veterinário.
+     * 4. Anti-Colisão de Pet (NOVO).
+     */
     public function store(Request $request)
     {
-        // ... (Mantenha o código existente, mas se quiser segurança extra, verifique se o pet_id pertence ao user logado) ...
-        
         $request->validate([
             'pet_id' => 'required|exists:pets,id',
-            'veterinario_id' => 'required|exists:users,id',
-            'data_hora' => 'required|date',
-            'tipo' => 'required|string',
-            'observacoes' => 'nullable|string',
+            'data_hora' => 'required|date|after:now',
+            'tipo' => 'required',
         ]);
 
-        Agendamento::create($request->all());
+        // --- PREPARAÇÃO DOS DADOS ---
+        $inicio = Carbon::parse($request->data_hora);
+        $duracaoHoras = ($request->tipo === 'Cirurgia') ? 5 : 1;
+        $fim = $inicio->copy()->addHours($duracaoHoras);
 
-        return redirect()->route('agendamentos.index')
-                         ->with('success', 'Agendamento realizado com sucesso!');
-    }
+        // --- REGRA 1: HORÁRIO DE FUNCIONAMENTO ---
+        if ($inicio->hour < 8) {
+            return back()->withInput()->withErrors(['data_hora' => 'A clínica abre apenas às 08:00.']);
+        }
 
-    // ... (Copie os métodos restantes edit, update, destroy, finalizar, storeFinalizacao do código anterior se precisar, ou apenas substitua o index e create acima) ...
-    
-    // Vou colocar os outros métodos aqui para garantir que o arquivo fique completo e correto
-    
-    public function edit(Agendamento $agendamento)
-    {
-        // Segurança: Cliente só edita o seu (ou nem edita, dependendo da regra)
-        // Vamos assumir que apenas funcionários editam por enquanto, ou manter aberto
-        $pets = Pet::with('cliente')->orderBy('nome', 'asc')->get();
-        $veterinarios = User::where('perfil', 'Veterinário')->orderBy('name', 'asc')->get();
+        $fechamento = $inicio->copy()->setTime(22, 0, 0);
+        if ($fim->gt($fechamento)) {
+            return back()->withInput()->withErrors([
+                'data_hora' => "O procedimento termina após às 22:00. Para {$request->tipo}, a duração é de {$duracaoHoras}h."
+            ]);
+        }
 
-        return view('agendamentos.edit', compact('agendamento', 'pets', 'veterinarios'));
-    }
+        // --- REGRA 2: DISPONIBILIDADE DO VETERINÁRIO ---
+        if ($request->veterinario_id) {
+            $conflitosVet = Agendamento::where('veterinario_id', $request->veterinario_id)
+                ->whereDate('data_hora', $inicio->toDateString())
+                ->where('status', '!=', 'Cancelado') // Ignora cancelados
+                ->get();
 
-    public function update(Request $request, Agendamento $agendamento)
-    {
-        $request->validate([
-            'pet_id' => 'required|exists:pets,id',
-            'veterinario_id' => 'required|exists:users,id',
-            'data_hora' => 'required|date',
-            'tipo' => 'required|string',
-            'status' => 'required|string',
-            'observacoes' => 'nullable|string',
+            foreach ($conflitosVet as $agenda) {
+                $inicioExistente = $agenda->data_hora;
+                $duracaoExistente = ($agenda->tipo === 'Cirurgia') ? 5 : 1;
+                $fimExistente = $inicioExistente->copy()->addHours($duracaoExistente);
+
+                // Lógica de Interseção: (InicioA < FimB) E (FimA > InicioB)
+                if ($inicio->lessThan($fimExistente) && $fim->greaterThan($inicioExistente)) {
+                    return back()->withInput()->withErrors([
+                        'data_hora' => "O veterinário selecionado já está ocupado neste horário ({$inicioExistente->format('H:i')} - {$fimExistente->format('H:i')})."
+                    ]);
+                }
+            }
+        }
+
+        // --- REGRA 3: DISPONIBILIDADE DO PET (NOVO) ---
+        // O mesmo pet não pode estar em dois lugares ao mesmo tempo
+        $conflitosPet = Agendamento::where('pet_id', $request->pet_id)
+            ->whereDate('data_hora', $inicio->toDateString())
+            ->where('status', '!=', 'Cancelado')
+            ->get();
+
+        foreach ($conflitosPet as $agenda) {
+            $inicioExistente = $agenda->data_hora;
+            $duracaoExistente = ($agenda->tipo === 'Cirurgia') ? 5 : 1;
+            $fimExistente = $inicioExistente->copy()->addHours($duracaoExistente);
+
+            if ($inicio->lessThan($fimExistente) && $fim->greaterThan($inicioExistente)) {
+                return back()->withInput()->withErrors([
+                    'data_hora' => "Este Pet já possui um agendamento conflitante neste horário ({$inicioExistente->format('H:i')} - {$fimExistente->format('H:i')})."
+                ]);
+            }
+        }
+
+        // --- SUCESSO ---
+        Agendamento::create([
+            'pet_id' => $request->pet_id,
+            'veterinario_id' => $request->veterinario_id,
+            'data_hora' => $request->data_hora,
+            'tipo' => $request->tipo,
+            'observacoes' => $request->observacoes,
+            'status' => 'Agendado'
         ]);
 
-        $agendamento->update($request->all());
-
-        return redirect()->route('agendamentos.index')
-                         ->with('success', 'Agendamento atualizado com sucesso!');
-    }
-
-    public function destroy(Agendamento $agendamento)
-    {
-        $agendamento->delete();
-        return redirect()->route('agendamentos.index')
-                         ->with('success', 'Agendamento cancelado e removido!');
-    }
-
-    public function concluir(Agendamento $agendamento)
-    {
-        $agendamento->status = 'Concluído';
-        $agendamento->save();
-        return back()->with('success', 'Atendimento concluído! O histórico do pet foi atualizado.');
+        return redirect()->route('agendamentos.index')->with('success', 'Agendamento realizado com sucesso!');
     }
 
     public function finalizar(Agendamento $agendamento)
     {
-        $agendamento->load(['pet.cliente']);
-        return view('agendamentos.finalizar', compact('agendamento'));
+        if (Auth::user()->isCliente()) abort(403);
+        
+        if ($agendamento->status !== 'Agendado') {
+            return redirect()->route('agendamentos.index')->with('error', 'Agendamento inválido para finalização.');
+        }
+
+        return view('prontuario.create', compact('agendamento'));
     }
 
     public function storeFinalizacao(Request $request, Agendamento $agendamento)
     {
+        if (Auth::user()->isCliente()) abort(403);
+
         $request->validate([
-            'sintomas' => 'required|string',
-            'diagnostico' => 'nullable|string',
-            'tratamento' => 'nullable|string',
-            'observacoes' => 'nullable|string',
+            'sintomas' => 'required',
+            'diagnostico' => 'required',
+            'tratamento' => 'required',
         ]);
 
         \App\Models\Prontuario::create([
-            'pet_id' => $agendamento->pet_id,
-            'veterinario_id' => \Illuminate\Support\Facades\Auth::id(),
             'agendamento_id' => $agendamento->id,
+            'pet_id' => $agendamento->pet_id,
+            'veterinario_id' => Auth::id(),
             'data_atendimento' => now(),
             'sintomas' => $request->sintomas,
             'diagnostico' => $request->diagnostico,
@@ -153,15 +161,25 @@ class AgendamentoController extends Controller
             'observacoes' => $request->observacoes,
         ]);
 
-        $agendamento->status = 'Concluído';
-        
-        if (!$agendamento->veterinario_id) {
-            $agendamento->veterinario_id = \Illuminate\Support\Facades\Auth::id();
-        }
-        
-        $agendamento->save();
+        $agendamento->update(['status' => 'Concluído']);
 
-        return redirect()->route('agendamentos.index')
-                         ->with('success', 'Consulta finalizada e prontuário registrado com sucesso!');
+        return redirect()->route('agendamentos.index')->with('success', 'Consulta concluída e Prontuário salvo!');
     }
+
+    public function destroy(string $id)
+    {
+        $agendamento = Agendamento::findOrFail($id);
+
+        if (Auth::user()->isCliente()) {
+            if (!$agendamento->pet || $agendamento->pet->cliente_id !== Auth::user()->cliente->id) {
+                abort(403);
+            }
+        }
+
+        $agendamento->update(['status' => 'Cancelado']);
+
+        return redirect()->route('agendamentos.index')->with('success', 'Agendamento cancelado.');
+    }
+
+    
 }

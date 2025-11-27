@@ -3,95 +3,147 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pet;
-use App\Models\Cliente; // Importante para listar os donos
+use App\Models\Cliente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PetController extends Controller
 {
     /**
-     * Lista todos os pets.
+     * Lista os Pets.
+     * Admin/Vet: Vê todos.
+     * Cliente: Vê apenas os seus.
      */
     public function index()
     {
-        // Traz os pets junto com os dados do cliente (dono) para otimizar
-        $pets = Pet::with('cliente')->orderBy('nome', 'asc')->get();
+        $user = Auth::user();
+
+        if ($user->isCliente()) {
+            // Garante que o cliente tem o registro vinculado para evitar erro
+            if (!$user->cliente) {
+                return redirect()->route('dashboard')->with('error', 'Perfil de cliente não encontrado.');
+            }
+            // Busca apenas os pets deste cliente
+            $pets = $user->cliente->pets; 
+        } else {
+            // Admin/Vet vê tudo, com os dados do dono (Eager Loading)
+            $pets = Pet::with('cliente')->get();
+        }
+
         return view('pets.index', compact('pets'));
     }
 
     /**
-     * Mostra o formulário de cadastro.
+     * Formulário de Criação.
      */
     public function create()
     {
-        // Precisamos da lista de clientes para selecionar o dono
-        $clientes = Cliente::orderBy('nome_completo', 'asc')->get();
+        $user = Auth::user();
+        $clientes = [];
+
+        // Se for Admin ou Vet, precisa da lista de donos para escolher
+        if (!$user->isCliente()) {
+            $clientes = Cliente::orderBy('nome_completo')->get();
+        } 
+        // Se for Cliente, não precisa de lista (será ele mesmo)
+
         return view('pets.create', compact('clientes'));
     }
 
     /**
-     * Salva o novo pet.
+     * Salvar o Pet no Banco.
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'cliente_id' => 'required|exists:clientes,id',
+        $user = Auth::user();
+
+        // Regras de validação comuns
+        $rules = [
             'nome' => 'required|string|max:255',
-            'especie' => 'required|string|max:50',
-            'raca' => 'nullable|string|max:50',
-            'peso' => 'nullable|numeric|min:0',
+            'especie' => 'required|string', // Ex: Cachorro, Gato
+            'raca' => 'nullable|string',
+            'peso' => 'nullable|numeric',
             'data_nascimento' => 'nullable|date',
-        ]);
+        ];
 
-        Pet::create($request->all());
+        // Se NÃO for cliente, o campo 'cliente_id' é obrigatório no formulário
+        if (!$user->isCliente()) {
+            $rules['cliente_id'] = 'required|exists:clientes,id';
+        }
 
-        return redirect()->route('pets.index')
-                         ->with('success', 'Pet cadastrado com sucesso!');
+        $dados = $request->validate($rules);
+
+        // INJEÇÃO DE SEGURANÇA:
+        // Se for Cliente, forçamos o ID dele, ignorando qualquer input malicioso
+        if ($user->isCliente()) {
+            $dados['cliente_id'] = $user->cliente->id;
+        }
+
+        Pet::create($dados);
+
+        return redirect()->route('pets.index')->with('success', 'Pet cadastrado com sucesso!');
     }
 
     /**
-     * Mostra um pet específico (pode ser usado para o prontuário futuramente).
+     * Exibe um Pet específico.
      */
     public function show(Pet $pet)
     {
-        // return view('pets.show', compact('pet'));
+        $this->authorizePetAccess($pet);
+        return view('pets.show', compact('pet'));
     }
 
     /**
-     * Mostra formulário de edição.
+     * Edição.
      */
     public function edit(Pet $pet)
     {
-        $clientes = Cliente::orderBy('nome_completo', 'asc')->get();
+        $this->authorizePetAccess($pet);
+        
+        // Se for admin, carrega lista de clientes para poder trocar o dono se necessário
+        $clientes = Auth::user()->isCliente() ? [] : Cliente::all();
+
         return view('pets.edit', compact('pet', 'clientes'));
     }
 
     /**
-     * Atualiza o pet.
+     * Update.
      */
     public function update(Request $request, Pet $pet)
     {
-        $request->validate([
-            'cliente_id' => 'required|exists:clientes,id',
+        $this->authorizePetAccess($pet);
+
+        $data = $request->validate([
             'nome' => 'required|string|max:255',
-            'especie' => 'required|string|max:50',
-            'raca' => 'nullable|string|max:50',
-            'peso' => 'nullable|numeric|min:0',
+            'especie' => 'required|string',
+            'raca' => 'nullable|string',
+            'peso' => 'nullable|numeric',
             'data_nascimento' => 'nullable|date',
         ]);
 
-        $pet->update($request->all());
+        $pet->update($data);
 
-        return redirect()->route('pets.index')
-                         ->with('success', 'Dados do pet atualizados!');
+        return redirect()->route('pets.index')->with('success', 'Dados do pet atualizados!');
     }
 
     /**
-     * Remove o pet.
+     * Delete.
      */
     public function destroy(Pet $pet)
     {
+        $this->authorizePetAccess($pet);
         $pet->delete();
-        return redirect()->route('pets.index')
-                         ->with('success', 'Pet removido com sucesso!');
+        return redirect()->route('pets.index')->with('success', 'Pet removido com sucesso.');
+    }
+
+    /**
+     * Helper de Segurança: Verifica se o usuário pode mexer neste pet.
+     */
+    private function authorizePetAccess(Pet $pet)
+    {
+        $user = Auth::user();
+        if ($user->isCliente() && $pet->cliente_id !== $user->cliente->id) {
+            abort(403, 'Você não tem permissão para acessar este pet.');
+        }
     }
 }

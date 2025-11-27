@@ -12,6 +12,8 @@ use App\Http\Controllers\AgendamentoController;
 use App\Http\Controllers\ProntuarioController; 
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\HistoricoController;
+
 
 // --- ROTAS PÚBLICAS (GUESTS) ---
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -67,7 +69,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/agendamentos/{agendamento}/concluir', [AgendamentoController::class, 'concluir'])
          ->name('agendamentos.concluir');
 
-    // Prontuários (NOVO)
+    // Prontuários 
     Route::resource('prontuario', ProntuarioController::class);
 
     // Rota que mostra o formulário de prontuário
@@ -81,9 +83,8 @@ Route::middleware(['auth'])->group(function () {
     // Relatórios e Métricas
     Route::get('/relatorios', [RelatorioController::class, 'index'])->name('relatorios.index');
 
-    // --- Rotas de Placeholder (Relatórios) ---
-    // (Os outros módulos já têm controllers reais, sobrou apenas relatórios)
-    Route::get('/historico-consultas', function () { return view('historico_consultas.index'); })->name('historico_consultas.index');
+    Route::get('/meu-historico', [HistoricoController::class, 'index'])->name('historico.index');
+    Route::get('/meu-historico/{id}', [HistoricoController::class, 'show'])->name('historico.show');
 
     // --- ROTAS DE GERENCIAMENTO (ADMIN) ---
     Route::middleware(['admin'])->prefix('gerenciar')->name('admin.')->group(function () {

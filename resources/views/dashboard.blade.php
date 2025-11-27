@@ -114,13 +114,15 @@
                             <div class="col"><a href="{{ route('produtos.index') }}" class="dashboard-button btn-green">Produtos</a></div>
                             <div class="col"><a href="{{ route('agendamentos.index') }}" class="dashboard-button btn-appointment">Agendamentos</a></div>
                             <div class="col"><a href="{{ route('prontuario.index') }}" class="dashboard-button btn-medical-record">Prontuário</a></div>
+                            <div class="col"><a href="{{ route('historico.index') }}" class="dashboard-button btn-receptionist-clients">Histórico de consultas</a></div>
                         @elseif (Auth::user()->perfil === 'Investidor')
                             {{-- Investidor --}}
                             <div class="col"><a href="{{ route('relatorios.index') }}" class="dashboard-button btn-investor-reports">Relatórios</a></div>
                         @elseif (Auth::user()->perfil === 'Cliente')
                             {{-- Cliente --}}
                             <div class="col"><a href="{{ route('agendamentos.index') }}" class="dashboard-button btn-appointment">Agendamentos</a></div>
-                            <div class="col"><a href="{{ route('historico_consultas.index') }}" class="dashboard-button btn-client-history">Histórico de consultas</a></div>
+                            <div class="col"><a href="{{ route('pets.index') }}" class="dashboard-button btn-receptionist-clients">Pets</a></div>
+                            <div class="col"><a href="{{ route('historico.index') }}" class="dashboard-button btn-client-history">Histórico de consultas</a></div>
                         @else
                             {{-- Perfil Desconhecido / Padrão --}}
                             <div class="col-12 text-center text-muted">Bem-vindo(a) {{ Auth::user()->name }}! Seu perfil não tem botões configurados.</div>

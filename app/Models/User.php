@@ -20,7 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'perfil',
+        'perfil', // 'Admin', 'Veterinário', 'Recepcionista', 'Investidor', 'Cliente'
     ];
     
     /**
@@ -46,53 +46,46 @@ class User extends Authenticatable
         ];
     }
 
-    // ... (código existente) ...
+    // --- RELACIONAMENTOS (O que faltava) ---
 
     /**
-     * Verifica se o usuário é um Administrador.
-     *
-     * @return bool
+     * Um usuário pode ter um perfil de Cliente associado.
      */
+    public function cliente()
+    {
+        return $this->hasOne(Cliente::class);
+    }
+    
+    /**
+     * Um usuário (se for Veterinário) pode ter vários agendamentos.
+     */
+    public function agendamentos()
+    {
+        return $this->hasMany(Agendamento::class, 'veterinario_id');
+    }
+
+    // --- HELPER FUNCTIONS (Já existentes) ---
+
     public function isAdmin(): bool
     {
         return $this->perfil === 'Admin';
     }
 
-    /**
-     * Verifica se o usuário é uma Recepcionista.
-     *
-     * @return bool
-     */
     public function isRecepcionista(): bool
     {
         return $this->perfil === 'Recepcionista';
     }
 
-    /**
-     * Verifica se o usuário é um Veterinário.
-     *
-     * @return bool
-     */
     public function isVeterinario(): bool
     {
         return $this->perfil === 'Veterinário';
     }
 
-    /**
-     * Verifica se o usuário é um Investidor.
-     *
-     * @return bool
-     */
     public function isInvestidor(): bool
     {
         return $this->perfil === 'Investidor';
     }
 
-    /**
-     * Verifica se o usuário é um Cliente.
-     *
-     * @return bool
-     */
     public function isCliente(): bool
     {
         return $this->perfil === 'Cliente';

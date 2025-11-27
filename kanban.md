@@ -4,13 +4,14 @@
 
 | ID da Tarefa | Tarefa | Status | Prioridade |
 | :--- | :--- | :--- | :--- |
-| `AGENDA-05` | Regras de Agendamento (Horários, Duração e Conflitos) | `Pausado` | Alta |
+| `AGENDA-05` | Regras de Agendamento (Horários, Duração e Conflitos) | `Em andamento` | Alta |
 
 ## Backlog (Tarefas a Fazer)
 
 | ID da Tarefa | Tarefa | Status | Prioridade |
 | :--- | :--- | :--- | :--- |
 | `AUTH-05` | Implementar "Esqueci minha senha" | `Pausado` | Baixa |
+| `ADMIN-06` | Fazer clientes poderem padastrar os próprios pets | `Pausado` | Média |
 
 ## Feito (Tarefas Concluídas)
 

@@ -18,6 +18,7 @@ class Agendamento extends Model
         'observacoes',
     ];
 
+    // Garante que o Laravel entenda 'data_hora' como Data e Hora, não texto
     protected $casts = [
         'data_hora' => 'datetime',
     ];
