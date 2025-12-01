@@ -39,7 +39,7 @@ O **Animal Health Center** é uma aplicação web. Não há necessidade de insta
 
 ## 3. INSTRUÇÕES PARA DEVS (Ambiente de Desenvolvimento)
 
-Siga as instruções abaixo para preparar seu ambiente e ser um desenvolvedor do projeto. O projeto utiliza Docker para garantir a consistência do ambiente.
+Siga as instruções abaixo para preparar seu ambiente e ser um desenvolvedor do projeto.
 
 ### 3.1. Preparação
 
@@ -54,24 +54,6 @@ Siga as instruções abaixo para preparar seu ambiente e ser um desenvolvedor do
     ```
     *Obs: Edite o arquivo `.env` para configurar as variáveis específicas do ambiente, se necessário.*
 
-### 3.2. Instalação e Execução com Docker (Recomendado)
-
-O Docker simplifica a configuração do ambiente (PHP, Banco de Dados, Web Server).
-
-1.  **Executar o ambiente:** Execute o comando para construir as imagens e iniciar os contêineres:
-    ```bash
-    docker-compose up --build -d
-    ```
-2.  **Instalar Dependências e Chave:** Acesse o contêiner PHP e execute a instalação e configuração inicial:
-    ```bash
-    docker-compose exec app composer install
-    docker-compose exec app php artisan key:generate
-    ```
-3.  **Criar o Banco de Dados:** Execute as migrações para criar as tabelas no banco de dados:
-    ```bash
-    docker-compose exec app php artisan migrate
-    ```
-4.  **Acesso:** Em seguida, acesse o navegador e digite a URL: `http://localhost:8080`. Você deverá ver o sistema no seu browser.
 
 ### 3.3. Execução Local (Opcional)
 
@@ -110,13 +92,6 @@ Laravel Framework versão 10.x (ou superior)
 
 Banco de Dados:
 
-MySQL (Geralmente utilizado em ambientes Laravel com Docker) versão 8.0
-
-Outras:
-
-Docker versão 24.0.0 (ou superior)
-
-Docker Compose versão 2.20.0 (ou superior)
 
 PHPUnit versão 10.x (Para testes unitários e de caixa-preta)
 
