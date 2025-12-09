@@ -4,19 +4,21 @@
 
 | ID da Tarefa | Tarefa | Status | Prioridade |
 | :--- | :--- | :--- | :--- |
-| `AGENDA-05` | Regras de Agendamento (Horários, Duração e Conflitos) | `Em andamento` | Alta |
+
 
 ## Backlog (Tarefas a Fazer)
 
 | ID da Tarefa | Tarefa | Status | Prioridade |
 | :--- | :--- | :--- | :--- |
-| `AUTH-05` | Implementar "Esqueci minha senha" | `Pausado` | Baixa |
-| `ADMIN-06` | Fazer clientes poderem padastrar os próprios pets | `Pausado` | Média |
+
 
 ## Feito (Tarefas Concluídas)
 
 | ID da Tarefa | Tarefa | Status |
 | :--- | :--- | :--- |
+| `AUTH-05` | Implementar "Esqueci minha senha" | `Feito` | Baixa |
+| `ADMIN-06` | Fazer clientes poderem padastrar os próprios pets | `Feito` | Média |
+| `AGENDA-05` | Regras de Agendamento (Horários, Duração e Conflitos) | `Feito` | Alta |
 | `RELAT-01` | Módulo de Relatórios (Apenas visualização) | `Feito` | Média |
 | `PRONT-01` | Módulo de Prontuário (Estrutura e Lógica) | `Feito` | Alta |
 | `AGENDA-01` | Módulo de Agendamentos (Completo) | `Feito` |
