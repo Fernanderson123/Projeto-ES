@@ -150,27 +150,69 @@ PHPUnit 10.x (Testes automatizados)
 AnimalHealthCenter
 ├── backend/
 │   └── src/
-│       ├── config/
-│       ├── controllers/
-│       ├── middleware/
-│       ├── models/
-│       ├── public/
-│       ├── routes/
-│       └── views/
+│       ├── config/                # Configurações do sistema (env, database, auth, etc.)
+│       │   └── database.php
+│       │
+│       ├── controllers/           # Controllers da aplicação
+│       │   ├── AgendamentoController.php
+│       │   ├── ClienteController.php
+│       │   ├── PetController.php
+│       │   ├── ProdutoController.php
+│       │   ├── ProntuarioController.php
+│       │   ├── RelatorioController.php
+│       │   └── Auth/
+│       │
+│       ├── middleware/            # Middlewares (autenticação, permissões, etc.)
+│       │   ├── Authenticate.php
+│       │   ├── RedirectIfAuthenticated.php
+│       │   └── AdminMiddleware.php
+│       │
+│       ├── models/                # Modelos e entidades do sistema
+│       │   ├── User.php
+│       │   ├── Cliente.php
+│       │   ├── Pet.php
+│       │   ├── Agendamento.php
+│       │   ├── Produto.php
+│       │   └── Prontuario.php
+│       │
+│       ├── public/                # Arquivos públicos
+│       │   ├── css/
+│       │   ├── js/
+│       │   └── images/
+│       │
+│       ├── routes/                # Definição das rotas
+│       │   ├── web.php
+│       │   └── api.php
+│       │
+│       └── views/                 # Templates Blade (interface do sistema)
+│           ├── auth/
+│           ├── clientes/
+│           ├── pets/
+│           ├── agendamentos/
+│           ├── produtos/
+│           ├── prontuario/
+│           └── dashboard.blade.php
 │
 ├── documentacao/
 │   ├── Requisitos/
+│   │   ├── requisitos.docx
+│   │   └── regras-de-negocio.pdf
+│   │
 │   └── Diagramas/
+│       ├── casos-de-uso/
+│       ├── DER/
+│       ├── UML/
+│       └── BPMN/
 │
 ├── database/
-│   ├── migrations/
-│   └── seeders/
+│   ├── migrations/               # Migrations do banco de dados
+│   └── seeders/                  # Seeders de dados iniciais
 │
-├── tests/
+├── tests/                         # Testes automatizados
 │   ├── Unit/
 │   └── Feature/
 │
-├── .env
+├── .env                           # Variáveis de ambiente
 ├── .env.example
 ├── composer.json
 ├── artisan
