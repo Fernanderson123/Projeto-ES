@@ -145,74 +145,43 @@ Composer (Gerenciador de dependências PHP)
 PHPUnit 10.x (Testes automatizados)
 
 
-📁 Estrutura do Projeto
-AnimalHealthCenter
-├── backend/
-│   └── src/
-│       ├── config/                # Configurações do sistema (env, database, auth, etc.)
+## 5. Estrutura do Projeto
+📁 AnimalHealthCenter
+├── 📁 backend
+│   └── 📁 src
+│       ├── 📁 config          # Configurações (env, database, auth)
 │       │   └── database.php
-│       │
-│       ├── controllers/           # Controllers da aplicação
+│       ├── 📁 controllers     # Lógica de controle
 │       │   ├── AgendamentoController.php
 │       │   ├── ClienteController.php
 │       │   ├── PetController.php
 │       │   ├── ProdutoController.php
 │       │   ├── ProntuarioController.php
 │       │   ├── RelatorioController.php
-│       │   └── Auth/
-│       │
-│       ├── middleware/            # Middlewares (autenticação, permissões, etc.)
+│       │   └── 📁 Auth
+│       ├── 📁 middleware      # Filtros de acesso
 │       │   ├── Authenticate.php
 │       │   ├── RedirectIfAuthenticated.php
 │       │   └── AdminMiddleware.php
-│       │
-│       ├── models/                # Modelos e entidades do sistema
+│       ├── 📁 models          # Entidades do banco de dados
 │       │   ├── User.php
 │       │   ├── Cliente.php
 │       │   ├── Pet.php
-│       │   ├── Agendamento.php
-│       │   ├── Produto.php
-│       │   └── Prontuario.php
-│       │
-│       ├── public/                # Arquivos públicos
-│       │   ├── css/
-│       │   ├── js/
-│       │   └── images/
-│       │
-│       ├── routes/                # Definição das rotas
+│       │   └── ...
+│       ├── 📁 public          # Arquivos estáticos (CSS, JS, Imagens)
+│       ├── 📁 routes          # Definição de rotas (web e api)
 │       │   ├── web.php
 │       │   └── api.php
-│       │
-│       └── views/                 # Templates Blade (interface do sistema)
-│           ├── auth/
-│           ├── clientes/
-│           ├── pets/
-│           ├── agendamentos/
-│           ├── produtos/
-│           ├── prontuario/
+│       └── 📁 views           # Interface (Blade Templates)
+│           ├── 📁 clientes
+│           ├── 📁 pets
 │           └── dashboard.blade.php
-│
-├── documentacao/
-│   ├── Requisitos/
-│   │   ├── requisitos.docx
-│   │   └── regras-de-negocio.pdf
-│   │
-│   └── Diagramas/
-│       ├── casos-de-uso/
-│       ├── DER/
-│       ├── UML/
-│       └── BPMN/
-│
-├── database/
-│   ├── migrations/               # Migrations do banco de dados
-│   └── seeders/                  # Seeders de dados iniciais
-│
-├── tests/                         # Testes automatizados
-│   ├── Unit/
-│   └── Feature/
-│
-├── .env                           # Variáveis de ambiente
-├── .env.example
-├── composer.json
-├── artisan
-└── README.md
+├── 📁 documentacao
+│   ├── 📁 Requisitos
+│   └── 📁 Diagramas           # UML, DER, BPMN
+├── 📁 database
+│   ├── 📁 migrations          # Criação de tabelas
+│   └── 📁 seeders             # População inicial de dados
+├── 📁 tests                   # Testes Unitários e de Funcionalidade
+├── .env                       # Configurações locais
+└── composer.json              # Dependências do projeto
