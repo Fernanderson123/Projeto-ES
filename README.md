@@ -145,8 +145,8 @@ Composer (Gerenciador de dependências PHP)
 PHPUnit 10.x (Testes automatizados)
 
 
-## 5. Estrutura do projeto
-   
+📁 Estrutura do Projeto
+AnimalHealthCenter
 ├── backend/
 │   └── src/
 │       ├── config/                # Configurações do sistema (env, database, auth, etc.)
