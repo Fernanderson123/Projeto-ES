@@ -37,109 +37,159 @@ O **Animal Health Center** é uma aplicação web. Não há necessidade de insta
 
 ---
 
-## 3. INSTRUÇÕES PARA DEVS (Ambiente de Desenvolvimento)
+3. INSTRUÇÕES PARA DEVS (Ambiente de Desenvolvimento)
 
-Siga as instruções abaixo para preparar seu ambiente e ser um desenvolvedor do projeto. O projeto utiliza Docker para garantir a consistência do ambiente.
+Siga as instruções abaixo para preparar o ambiente de desenvolvimento local do projeto.
+Este projeto foi configurado para execução local com PHP, Composer e MySQL.
 
-### 3.1. Preparação
+3.1. Preparação
 
-1.  **Clone o projeto:** Clone o repositório na sua máquina aplicando o comando:
-    ```bash
-    git clone [https://...](https://.../pt/what-is/repo/) animalHealthCenter
-    cd animalHealthCenter
-    ```
-2.  **Configurar Variáveis de Ambiente:** Copie o arquivo de exemplo para criar o arquivo de configuração:
-    ```bash
-    cp .env.example .env
-    ```
-    *Obs: Edite o arquivo `.env` para configurar as variáveis específicas do ambiente, se necessário.*
+Clone o projeto:
+Clone o repositório na sua máquina:
 
-### 3.2. Instalação e Execução com Docker (Recomendado)
+git clone https://github.com/seu-usuario/AnimalHealthCenter.git
+cd AnimalHealthCenter
 
-O Docker simplifica a configuração do ambiente (PHP, Banco de Dados, Web Server).
 
-1.  **Executar o ambiente:** Execute o comando para construir as imagens e iniciar os contêineres:
-    ```bash
-    docker-compose up --build -d
-    ```
-2.  **Instalar Dependências e Chave:** Acesse o contêiner PHP e execute a instalação e configuração inicial:
-    ```bash
-    docker-compose exec app composer install
-    docker-compose exec app php artisan key:generate
-    ```
-3.  **Criar o Banco de Dados:** Execute as migrações para criar as tabelas no banco de dados:
-    ```bash
-    docker-compose exec app php artisan migrate
-    ```
-4.  **Acesso:** Em seguida, acesse o navegador e digite a URL: `http://localhost:8080`. Você deverá ver o sistema no seu browser.
+Configurar variáveis de ambiente:
+Copie o arquivo de exemplo para criar o arquivo de configuração:
 
-### 3.3. Execução Local (Opcional)
+copy .env.example .env
 
-Se preferir rodar localmente (assumindo PHP e Composer instalados):
 
-1.  **Instalar dependências:** Execute o comando para instalar as bibliotecas e outras dependências:
-    ```bash
-    composer install
-    ```
-2.  **Executar o servidor:** Para executar o projeto, execute o comando na raiz do projeto:
-    ```bash
-    php artisan serve
-    ```
-    Em seguida, acesse o browser e digite a URL `http://localhost:8000`.
+(No Linux/Mac: cp .env.example .env)
 
----
+Configurar o banco de dados no .env:
+Edite o arquivo .env e ajuste as configurações do banco MySQL local:
 
-## 4. TECNOLOGIAS
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=
+
+3.2. Criação do Banco de Dados
+
+Utilizando o MySQL local (por exemplo, via Laragon):
+
+Abra o terminal do MySQL:
+
+mysql -u root
+
+
+Crie o banco de dados:
+
+CREATE DATABASE laravel;
+
+
+Verifique se o banco foi criado:
+
+SHOW DATABASES;
+
+3.3. Instalação e Execução Local
+
+Instalar dependências do projeto:
+
+composer install
+
+
+Gerar a chave da aplicação Laravel:
+
+php artisan key:generate
+
+
+Criar as tabelas do banco de dados (migrations):
+
+php artisan migrate
+
+
+Executar o servidor de desenvolvimento:
+
+php artisan serve
+
+
+Acessar o sistema:
+Abra o navegador e acesse:
+
+http://127.0.0.1:8000
+
+4. TECNOLOGIAS
 
 O projeto foi desenvolvido utilizando as seguintes tecnologias:
-Frontend:
 
-HTML5 (Padrão)
+Frontend
 
-CSS3 (Padrão)
+HTML5
 
-JavaScript (Padrão)
+CSS3
 
-Blade Templates (Framework Laravel)
+JavaScript
 
-Backend:
+Blade Templates (Laravel)
 
-PHP versão 8.2.10 (ou superior)
+Backend
 
-Laravel Framework versão 10.x (ou superior)
+PHP 8.2.x
 
-Banco de Dados:
+Laravel Framework 12.x
 
-MySQL (Geralmente utilizado em ambientes Laravel com Docker) versão 8.0
+Banco de Dados
 
-Outras:
+MySQL 8.x
 
-Docker versão 24.0.0 (ou superior)
+Outras Ferramentas
 
-Docker Compose versão 2.20.0 (ou superior)
+Composer (Gerenciador de dependências PHP)
 
-PHPUnit versão 10.x (Para testes unitários e de caixa-preta)
+PHPUnit 10.x (Testes automatizados)
 
-----
+5. ORGANIZAÇÃO DO PROJETO
 
-## 5. ORGANIZAÇÃO DO PROJETO
+O projeto segue a estrutura padrão do framework Laravel:
 
-Este projeto está organizado nas pastas descritas abaixo com as seguintes finalidades:
+app/
+Contém o código-fonte principal da aplicação.
 
-* **`app/`**: Contém o código-fonte principal da aplicação Laravel (Modelos, Controllers, Middleware, etc.).
-    * **`app/Models/`**: Definição das classes de dados (Entidades).
-    * **`app/Http/Controllers/`**: Lógica de negócio e manipulação de requisições.
-* **`resources/`**: Arquivos de *frontend*.
-    * **`resources/views/`**: Templates Blade e código HTML.
-    * **`resources/css/`**: Arquivos de estilo.
-    * **`resources/js/`**: Arquivos JavaScript.
-* **`routes/`**: Definição das rotas da aplicação (ex: `web.php`).
-* **`public/`**: Contém o `index.php` e os recursos acessíveis publicamente.
-* **`tests/`**: Arquivos e scripts de testes automatizados.
-    * **`tests/Unit/`**: Testes de classes e métodos isolados.
-    * **`tests/Feature/`**: Testes de interface e comportamento (caixa-preta/E2E).
-* **`docs/`**: Documentação do projeto, incluindo requisitos e padrões.
-    * **`docs/requisitos.docx`**: O documento de especificação de requisitos.
-    * **`docs/casos_de_uso/`**: Detalhamento dos casos de uso.
-* **`composer.json`**: Definição das dependências do PHP/Laravel.
-* **`docker-compose.yml`**: Configuração do ambiente de desenvolvimento com Docker.
+app/Models/: Modelos e entidades do sistema.
+
+app/Http/Controllers/: Controllers e regras de negócio.
+
+resources/
+Arquivos de frontend.
+
+resources/views/: Templates Blade.
+
+resources/css/: Estilos.
+
+resources/js/: Scripts JavaScript.
+
+routes/
+Definição das rotas da aplicação.
+
+web.php: Rotas web do sistema.
+
+public/
+Ponto de entrada da aplicação (index.php) e arquivos públicos.
+
+database/
+
+database/migrations/: Migrations do banco de dados.
+
+database/seeders/: Seeders para dados iniciais.
+
+tests/
+
+tests/Unit/: Testes unitários.
+
+tests/Feature/: Testes de funcionalidades (caixa-preta).
+
+docs/
+Documentação do projeto.
+
+requisitos.docx
+
+Casos de uso e diagramas.
+
+composer.json
+Gerenciamento de dependências PHP.
