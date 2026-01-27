@@ -144,52 +144,74 @@ Composer (Gerenciador de dependências PHP)
 
 PHPUnit 10.x (Testes automatizados)
 
-5. ORGANIZAÇÃO DO PROJETO
-
-O projeto segue a estrutura padrão do framework Laravel:
-
-app/
-Contém o código-fonte principal da aplicação.
-
-app/Models/: Modelos e entidades do sistema.
-
-app/Http/Controllers/: Controllers e regras de negócio.
-
-resources/
-Arquivos de frontend.
-
-resources/views/: Templates Blade.
-
-resources/css/: Estilos.
-
-resources/js/: Scripts JavaScript.
-
-routes/
-Definição das rotas da aplicação.
-
-web.php: Rotas web do sistema.
-
-public/
-Ponto de entrada da aplicação (index.php) e arquivos públicos.
-
-database/
-
-database/migrations/: Migrations do banco de dados.
-
-database/seeders/: Seeders para dados iniciais.
-
-tests/
-
-tests/Unit/: Testes unitários.
-
-tests/Feature/: Testes de funcionalidades (caixa-preta).
-
-docs/
-Documentação do projeto.
-
-requisitos.docx
-
-Casos de uso e diagramas.
-
-composer.json
-Gerenciamento de dependências PHP.
+5. Estrutura do Projeto
+AnimalHealthCenter
+├── backend/
+│   └── src/
+│       ├── config/                # Configurações do sistema (env, database, auth, etc.)
+│       │   └── database.php
+│       │
+│       ├── controllers/           # Controllers da aplicação
+│       │   ├── AgendamentoController.php
+│       │   ├── ClienteController.php
+│       │   ├── PetController.php
+│       │   ├── ProdutoController.php
+│       │   ├── ProntuarioController.php
+│       │   ├── RelatorioController.php
+│       │   └── Auth/
+│       │
+│       ├── middleware/            # Middlewares (autenticação, permissões, etc.)
+│       │   ├── Authenticate.php
+│       │   ├── RedirectIfAuthenticated.php
+│       │   └── AdminMiddleware.php
+│       │
+│       ├── models/                # Modelos e entidades do sistema
+│       │   ├── User.php
+│       │   ├── Cliente.php
+│       │   ├── Pet.php
+│       │   ├── Agendamento.php
+│       │   ├── Produto.php
+│       │   └── Prontuario.php
+│       │
+│       ├── public/                # Arquivos públicos
+│       │   ├── css/
+│       │   ├── js/
+│       │   └── images/
+│       │
+│       ├── routes/                # Definição das rotas
+│       │   ├── web.php
+│       │   └── api.php
+│       │
+│       └── views/                 # Templates Blade (interface do sistema)
+│           ├── auth/
+│           ├── clientes/
+│           ├── pets/
+│           ├── agendamentos/
+│           ├── produtos/
+│           ├── prontuario/
+│           └── dashboard.blade.php
+│
+├── documentacao/
+│   ├── Requisitos/
+│   │   ├── requisitos.docx
+│   │   └── regras-de-negocio.pdf
+│   │
+│   └── Diagramas/
+│       ├── casos-de-uso/
+│       ├── DER/
+│       ├── UML/
+│       └── BPMN/
+│
+├── database/
+│   ├── migrations/               # Migrations do banco de dados
+│   └── seeders/                  # Seeders de dados iniciais
+│
+├── tests/                         # Testes automatizados
+│   ├── Unit/
+│   └── Feature/
+│
+├── .env                           # Variáveis de ambiente
+├── .env.example
+├── composer.json
+├── artisan
+└── README.md
