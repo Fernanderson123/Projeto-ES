@@ -147,7 +147,6 @@ PHPUnit 10.x (Testes automatizados)
 
 ## 5. Estrutura do projeto
    
-AnimalHealthCenter
 ├── backend/
 │   └── src/
 │       ├── config/                # Configurações do sistema (env, database, auth, etc.)
