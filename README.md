@@ -37,12 +37,12 @@ O **Animal Health Center** é uma aplicação web. Não há necessidade de insta
 
 ---
 
-3. INSTRUÇÕES PARA DEVS (Ambiente de Desenvolvimento)
+## 3. INSTRUÇÕES PARA DEVS (Ambiente de Desenvolvimento)
 
 Siga as instruções abaixo para preparar o ambiente de desenvolvimento local do projeto.
 Este projeto foi configurado para execução local com PHP, Composer e MySQL.
 
-3.1. Preparação
+### 3.1. Preparação
 
 Clone o projeto:
 Clone o repositório na sua máquina:
@@ -69,7 +69,7 @@ DB_DATABASE=laravel
 DB_USERNAME=root
 DB_PASSWORD=
 
-3.2. Criação do Banco de Dados
+### 3.2. Criação do Banco de Dados
 
 Utilizando o MySQL local (por exemplo, via Laragon):
 
@@ -87,7 +87,7 @@ Verifique se o banco foi criado:
 
 SHOW DATABASES;
 
-3.3. Instalação e Execução Local
+### 3.3. Instalação e Execução Local
 
 Instalar dependências do projeto:
 
@@ -114,7 +114,7 @@ Abra o navegador e acesse:
 
 http://127.0.0.1:8000
 
-4. Tecnologias
+## 4. Tecnologias
 
 O projeto foi desenvolvido utilizando as seguintes tecnologias:
 
@@ -145,7 +145,7 @@ Composer (Gerenciador de dependências PHP)
 PHPUnit 10.x (Testes automatizados)
 
 
-4. Estrutura do projeto
+## 5. Estrutura do projeto
    
 AnimalHealthCenter
 ├── backend/
