@@ -114,7 +114,7 @@ Abra o navegador e acesse:
 
 http://127.0.0.1:8000
 
-4. TECNOLOGIAS
+4. Tecnologias
 
 O projeto foi desenvolvido utilizando as seguintes tecnologias:
 
@@ -144,7 +144,9 @@ Composer (Gerenciador de dependências PHP)
 
 PHPUnit 10.x (Testes automatizados)
 
-5. Estrutura do Projeto
+
+4. Estrutura do projeto
+   
 AnimalHealthCenter
 ├── backend/
 │   └── src/
