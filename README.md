@@ -146,70 +146,29 @@ PHPUnit 10.x (Testes automatizados)
 
 
 ## 5. Estrutura do Projeto
-
+```text
+AnimalHealthCenter
 ├── backend/
-│ └── src/
-│ ├── config/ # Configurações do sistema (env, database, auth, etc.)
-│ │ └── database.php
-│ │
-│ ├── controllers/ # Controllers da aplicação
-│ │ ├── AgendamentoController.php
-│ │ ├── ClienteController.php
-│ │ ├── PetController.php
-│ │ ├── ProdutoController.php
-│ │ ├── ProntuarioController.php
-│ │ ├── RelatorioController.php
-│ │ └── Auth/
-│ │
-│ ├── middleware/ # Middlewares (autenticação, permissões, etc.)
-│ │ ├── Authenticate.php
-│ │ ├── RedirectIfAuthenticated.php
-│ │ └── AdminMiddleware.php
-│ │
-│ ├── models/ # Modelos e entidades do sistema
-│ │ ├── User.php
-│ │ ├── Cliente.php
-│ │ ├── Pet.php
-│ │ ├── Agendamento.php
-│ │ ├── Produto.php
-│ │ └── Prontuario.php
-│ │
-│ ├── public/ # Arquivos públicos
-│ │ ├── css/
-│ │ ├── js/
-│ │ └── images/
-│ │
-│ ├── routes/ # Definição das rotas
-│ │ ├── web.php
-│ │ └── api.php
-│ │
-│ └── views/ # Templates Blade
-│ ├── auth/
-│ ├── clientes/
-│ ├── pets/
-│ ├── agendamentos/
-│ ├── produtos/
-│ ├── prontuario/
-│ └── dashboard.blade.php
+│   └── src/
+│       ├── config/
+│       ├── controllers/
+│       ├── middleware/
+│       ├── models/
+│       ├── public/
+│       ├── routes/
+│       └── views/
 │
 ├── documentacao/
-│ ├── Requisitos/
-│ │ ├── requisitos.docx
-│ │ └── regras-de-negocio.pdf
-│ │
-│ └── Diagramas/
-│ ├── casos-de-uso/
-│ ├── DER/
-│ ├── UML/
-│ └── BPMN/
+│   ├── Requisitos/
+│   └── Diagramas/
 │
 ├── database/
-│ ├── migrations/
-│ └── seeders/
+│   ├── migrations/
+│   └── seeders/
 │
 ├── tests/
-│ ├── Unit/
-│ └── Feature/
+│   ├── Unit/
+│   └── Feature/
 │
 ├── .env
 ├── .env.example
