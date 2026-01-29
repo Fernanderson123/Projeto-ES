@@ -7,76 +7,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     
     <style>
-        body { 
-            background-color: #fcfaf6; 
-            font-family: 'Georgia', serif; 
-        }
-        
-        /* Títulos */
-        h2, h5 { font-family: 'Georgia', serif; color: #1a1a1a; }
-        
-        /* Card do Formulário */
-        .form-card { 
-            background: white; 
-            padding: 2.5rem; 
-            border-radius: 12px; 
-            border: none; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02); 
-        }
-        
-        /* Labels e Inputs */
-        label { 
-            font-family: sans-serif; 
-            font-weight: 600; 
-            font-size: 0.9rem; 
-            color: #4a4a4a; 
-            margin-bottom: 0.4rem;
-        }
-        .form-control, .form-select {
-            border-radius: 8px;
-            padding: 0.6rem 1rem;
-            border: 1px solid #e0e0e0;
-        }
-        .form-control:focus, .form-select:focus {
-            border-color: #a78bfa;
-            box-shadow: 0 0 0 0.2rem rgba(167, 139, 250, 0.25);
-        }
-
-        /* Botão Padrão (Roxo) */
-        .btn-custom {
-            background-color: #a78bfa;
-            border-color: #a78bfa;
-            color: white;
-            font-family: sans-serif;
-            font-weight: bold;
-            border-radius: 8px;
-            transition: all 0.2s;
-        }
-        .btn-custom:hover {
-            background-color: #9061f9;
-            border-color: #9061f9;
-            color: white;
-        }
-
-        /* Link de Voltar */
-        .link-back {
-            color: #1a1a1a;
-            text-decoration: none;
-            font-family: sans-serif;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        .link-back:hover { color: #666; }
-        
-        /* Navbar Ajustes */
+        body { background-color: #fcfaf6; font-family: 'Georgia', serif; }
+        .form-card { background: white; padding: 2.5rem; border-radius: 12px; border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        label { font-family: sans-serif; font-weight: 600; font-size: 0.9rem; color: #4a4a4a; margin-bottom: 0.4rem; }
+        .form-control { border-radius: 8px; padding: 0.6rem 1rem; border: 1px solid #e0e0e0; }
+        .form-control:focus { border-color: #a78bfa; box-shadow: 0 0 0 0.2rem rgba(167, 139, 250, 0.25); }
+        .btn-custom { background-color: #a78bfa; border-color: #a78bfa; color: white; font-family: sans-serif; font-weight: bold; border-radius: 8px; transition: all 0.2s; }
+        .btn-custom:hover { background-color: #9061f9; color: white; }
+        .link-back { color: #1a1a1a; text-decoration: none; font-family: sans-serif; font-weight: 600; display: inline-flex; align-items: center; margin-bottom: 1rem; }
         .navbar-brand { color: #1a1a1a !important; }
     </style>
 </head>
 <body>
 
-    <!-- Header Padronizado -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-5">
         <div class="container-fluid mx-5">
             <a class="navbar-brand" href="{{ route('dashboard') }}" style="font-family: Georgia, serif; font-size: 1.5rem;">
@@ -101,14 +44,12 @@
         <div class="row justify-content-center">
             <div class="col-lg-9">
                 
-                <!-- Link de Voltar -->
                 <a href="{{ route('clientes.index') }}" class="link-back">
                     <i class="bi bi-arrow-left me-2"></i> Voltar para Clientes
                 </a>
 
-                <h2 class="mb-4 text-center">Cadastrar Novo Cliente</h2>
+                <h2 class="mb-4 text-center" style="font-family: sans-serif;">Cadastrar Novo Cliente</h2>
 
-                <!-- Alerta de Erros -->
                 @if ($errors->any())
                     <div class="alert alert-danger rounded-3 border-0 mb-4">
                         <ul class="mb-0">
@@ -121,38 +62,38 @@
                     <form action="{{ route('clientes.store') }}" method="POST">
                         @csrf
 
-                        <!-- Seção 1: Dados Pessoais -->
-                        <h5 class="border-bottom pb-2 mb-4">Informações Pessoais</h5>
+                        <h5 class="border-bottom pb-2 mb-4" style="font-family: sans-serif;">Informações Pessoais</h5>
                         
                         <div class="row mb-3">
                             <div class="col-md-8">
                                 <label class="form-label">Nome Completo <span class="text-danger">*</span></label>
+                                <!-- CORREÇÃO: Apenas old('nome_completo') -->
                                 <input type="text" name="nome_completo" class="form-control" value="{{ old('nome_completo') }}" required>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">CPF <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="cpf" name="cpf" required maxlength="14" oninput="mascaraCPF(this)" value="{{ old('cpf', $cliente->cpf) }}" >
+                                <!-- CORREÇÃO: Apenas old('cpf') -->
+                                <input type="text" name="cpf" class="form-control" value="{{ old('cpf') }}" required maxlength="14" oninput="mascaraCPF(this)" placeholder="000.000.000-00">
                             </div>
                         </div>
 
                         <div class="row mb-4">
                             <div class="col-md-6">
-                                <label class="form-label">Email</label>
-                                <input type="email" name="email" class="form-control" value="{{ old('email') }}">
+                                <label class="form-label">Email <span class="text-danger">*</span></label>
+                                <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Telefone</label>
-                                <input type="text" name="telefone" class="form-control" value="{{ old('telefone') }}">
+                                <input type="text" name="telefone" class="form-control" value="{{ old('telefone') }}" oninput="mascaraTelefone(this)" placeholder="(00) 00000-0000">
                             </div>
                         </div>
 
-                        <!-- Seção 2: Endereço -->
-                        <h5 class="border-bottom pb-2 mb-4 mt-5">Endereço</h5>
+                        <h5 class="border-bottom pb-2 mb-4 mt-5" style="font-family: sans-serif;">Endereço</h5>
 
                         <div class="row mb-3">
                             <div class="col-md-3">
                                 <label class="form-label">CEP</label>
-                                <input type="text" name="endereco_cep" class="form-control" value="{{ old('endereco_cep') }}">
+                                <input type="text" name="endereco_cep" class="form-control" value="{{ old('endereco_cep') }}" maxlength="9" oninput="mascaraCEP(this)">
                             </div>
                             <div class="col-md-7">
                                 <label class="form-label">Rua</label>
@@ -175,11 +116,10 @@
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">UF</label>
-                                <input type="text" name="endereco_estado" class="form-control" maxlength="2" value="{{ old('endereco_estado') }}">
+                                <input type="text" name="endereco_estado" class="form-control" maxlength="2" value="{{ old('endereco_estado') }}" style="text-transform: uppercase;">
                             </div>
                         </div>
 
-                        <!-- Botão -->
                         <div class="d-grid pt-3">
                             <button type="submit" class="btn btn-custom py-2 fs-5">Salvar Cliente</button>
                         </div>
@@ -188,6 +128,31 @@
             </div>
         </div>
     </div>
+
+    <!-- SCRIPTS DE MÁSCARA -->
+    <script>
+        function mascaraCPF(i) {
+            var v = i.value;
+            if(isNaN(v[v.length-1])){ i.value = v.substring(0, v.length-1); return; }
+            i.setAttribute("maxlength", "14");
+            if (v.length == 3 || v.length == 7) i.value += ".";
+            if (v.length == 11) i.value += "-";
+        }
+        function mascaraTelefone(i) {
+            var v = i.value;
+            if(isNaN(v[v.length-1])){ i.value = v.substring(0, v.length-1); return; }
+            i.setAttribute("maxlength", "15");
+            if (v.length == 1) i.value = "(" + i.value;
+            if (v.length == 3) i.value += ") ";
+            if (v.length == 10) i.value += "-";
+        }
+        function mascaraCEP(i) {
+            var v = i.value;
+            if(isNaN(v[v.length-1])){ i.value = v.substring(0, v.length-1); return; }
+            i.setAttribute("maxlength", "9");
+            if (v.length == 5) i.value += "-";
+        }
+    </script>
 
 </body>
 </html>

@@ -132,7 +132,8 @@ class AgendamentoController extends Controller
     public function finalizar(Agendamento $agendamento)
     {
         if (Auth::user()->isCliente()) abort(403);
-        
+        if (Auth::user()->isRecepcionista()) abort(403);
+
         if ($agendamento->status !== 'Agendado') {
             return redirect()->route('agendamentos.index')->with('error', 'Agendamento inválido para finalização.');
         }

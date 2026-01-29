@@ -83,8 +83,8 @@ Route::middleware(['auth'])->group(function () {
     // Relatórios e Métricas
     Route::get('/relatorios', [RelatorioController::class, 'index'])->name('relatorios.index');
 
-    Route::get('/meu-historico', [HistoricoController::class, 'index'])->name('historico.index');
-    Route::get('/meu-historico/{id}', [HistoricoController::class, 'show'])->name('historico.show');
+    Route::get('/meu-historico', [HistoricoController::class, 'index'])->name('historico_consultas.index');
+    Route::get('/meu-historico/{id}', [HistoricoController::class, 'show'])->name('historico_consultas.show');
 
     // --- ROTAS DE GERENCIAMENTO (ADMIN) ---
     Route::middleware(['admin'])->prefix('gerenciar')->name('admin.')->group(function () {

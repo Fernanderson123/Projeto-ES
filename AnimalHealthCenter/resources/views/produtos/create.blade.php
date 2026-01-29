@@ -115,7 +115,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label>Marca / Laboratório</label>
-                                <input type="text" name="marca" class="form-control" placeholder="Ex: Pfizer" value="{{ old('marca') }}">
+                                <input type="text" name="marca" class="form-control" placeholder="Ex: Pfizer" value="{{ old('marca') }}" >
                             </div>
                         </div>
 

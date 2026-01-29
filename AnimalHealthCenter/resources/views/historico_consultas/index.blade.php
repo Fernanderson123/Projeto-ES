@@ -122,7 +122,7 @@
                                     </td>
                                     
                                     <td class="text-end">
-                                        <a href="{{ route('historico.show', $item->id) }}" class="btn-details" title="Ver Detalhes">
+                                        <a href="{{ route('historico_consultas.show', $item->id) }}" class="btn-details" title="Ver Detalhes">
                                             <i class="bi bi-eye-fill"></i>
                                         </a>
                                     </td>

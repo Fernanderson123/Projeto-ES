@@ -93,7 +93,7 @@
                                     
                                     <td class="text-end">
                                         
-                                        @if($agenda->status === 'Agendado' && !Auth::user()->isCliente())
+                                        @if($agenda->status === 'Agendado' && !Auth::user()->isCliente() && !Auth::user()->isRecepcionista())
                                             <a href="{{ route('prontuario.create', ['agendamento_id' => $agenda->id]) }}" class="btn btn-link p-0 border-0 me-2 text-decoration-none" title="Finalizar e Gerar Prontuário">
                                                 <i class="bi bi-check-circle-fill text-success fs-5"></i>
                                             </a>

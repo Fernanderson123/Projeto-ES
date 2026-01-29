@@ -33,7 +33,7 @@ class HistoricoController extends Controller
                                ->orderBy('data_atendimento', 'desc')
                                ->get();
 
-        return view('historico.index', compact('consultas'));
+        return view('historico_consultas.index', compact('consultas'));
     }
 
     /**
@@ -49,6 +49,6 @@ class HistoricoController extends Controller
             abort(403, 'Acesso negado a este histórico.');
         }
 
-        return view('historico.show', compact('consulta'));
+        return view('historico_consultas.show', compact('consulta'));
     }
 }

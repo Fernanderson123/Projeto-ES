@@ -71,7 +71,7 @@
             @endif
 
             <div class="text-center mt-5">
-                <a href="{{ route('historico.index') }}" class="btn-back">Voltar ao Histórico</a>
+                <a href="{{ route('historico_consultas.index') }}" class="btn-back">Voltar ao Histórico</a>
             </div>
 
         </div>

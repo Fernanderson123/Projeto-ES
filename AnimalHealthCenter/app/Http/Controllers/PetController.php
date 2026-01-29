@@ -90,7 +90,7 @@ class PetController extends Controller
     public function show(Pet $pet)
     {
         $this->authorizePetAccess($pet);
-        return view('pets.show', compact('pet'));
+        return view('pets.index', compact('pet'));
     }
 
     /**
